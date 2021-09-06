@@ -1,15 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ElegirLocal.aspx.cs" Inherits="DesafioConfiteria.Inicio" %>
+﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ElegirLocal.aspx.cs" Inherits="DesafioConfiteria.ElegirLocal" %>
 
-<!DOCTYPE html>
+<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+    <script>
+		document.getElementById('masterNavbar').style.visibility = "hidden";
+	</script>
+	
+	<asp:DropDownList ID="ddlLocal" runat="server" CssClass="form-control dropdown">
+	</asp:DropDownList>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Elegir local</title>
-</head>
-<body>
-    <form id="form1" runat="server">
-        
-    </form>
-</body>
-</html>
+</asp:Content>

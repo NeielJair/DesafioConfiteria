@@ -7,11 +7,11 @@ using System.Web.UI.WebControls;
 
 namespace DesafioConfiteria
 {
-	public partial class Inicio : System.Web.UI.Page
+	public partial class ElegirLocal : Page
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
-
+			ddlLocal.Items.Add(new ListItem("asd"));
 		}
 	}
 }
