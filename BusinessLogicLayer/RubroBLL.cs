@@ -93,5 +93,20 @@ namespace BusinessLogicLayer
 
 			return RubroDAL.CrearRubro(rubro);
 		}
+
+		/// <summary>
+		/// Elimina un rubro de la BDs
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns>Devuelve true si la operación fue exitosa</returns>
+		public static bool EliminarRubroPorId(int id)
+		{
+			if (id < 1)
+			{
+				throw new ArgumentException("El ID del rubro no puede ser menor que 1");
+			}
+
+			return RubroDAL.EliminarRubroPorId(id);
+		}
 	}
 }

@@ -195,5 +195,34 @@ namespace DataAccessLayer
 				return result > 0;
 			}
 		}
+
+		public static bool EliminarRubroPorId(int id)
+		{
+			using (SqlConnection conn = SetupConnection())
+			{
+				conn.Open();
+				SqlTransaction transaction = conn.BeginTransaction();
+
+				SqlCommand cmd = new SqlCommand("dbo.EliminarRubroPorId", conn);
+				cmd.CommandType = System.Data.CommandType.StoredProcedure;
+				cmd.Parameters.AddWithValue("@IdRubro", id);
+				cmd.Transaction = transaction;
+
+				int result;
+				try
+				{
+					result = cmd.ExecuteNonQuery();
+					transaction.Commit();
+				}
+				catch
+				{
+					transaction.Rollback();
+					result = 0;
+					throw;
+				}
+
+				return result > 0;
+			}
+		}
 	}
 }

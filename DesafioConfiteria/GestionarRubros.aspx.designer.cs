@@ -24,6 +24,15 @@ namespace DesafioConfiteria
 		protected global::System.Web.UI.UpdatePanel upMain;
 
 		/// <summary>
+		/// Control btnNuevoRubro.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.LinkButton btnNuevoRubro;
+
+		/// <summary>
 		/// Control gvRubros.
 		/// </summary>
 		/// <remarks>
@@ -31,15 +40,6 @@ namespace DesafioConfiteria
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
 		protected global::System.Web.UI.WebControls.GridView gvRubros;
-
-		/// <summary>
-		/// Control btnNuevoRubro.
-		/// </summary>
-		/// <remarks>
-		/// Campo generado automáticamente.
-		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-		/// </remarks>
-		protected global::System.Web.UI.WebControls.Button btnNuevoRubro;
 
 		/// <summary>
 		/// Control upModal.

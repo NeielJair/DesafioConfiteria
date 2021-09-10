@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Utils;
 
 namespace DesafioConfiteria
 {
@@ -98,12 +99,31 @@ namespace DesafioConfiteria
 
                 case "Dar de baja":
                     rubro.FechaBaja = DateTime.Now;
-                    RubroBLL.ActualizarRubro(rubro);
+                    if (!RubroBLL.ActualizarRubro(rubro))
+					{
+                        MessageBox.Show(
+                            message: "No se pudo actualizar el rubro",
+                            type: "error");
+                    }
                     break;
 
                 case "Reactivar":
                     rubro.FechaBaja = null;
-                    RubroBLL.ActualizarRubro(rubro);
+                    if (!RubroBLL.ActualizarRubro(rubro))
+					{
+                        MessageBox.Show(
+                            message: "No se pudo actualizar el rubro",
+                            type: "error");
+                    }
+                    break;
+
+                case "Eliminar":
+                    if (!RubroBLL.EliminarRubroPorId(rubro.IdRubro))
+					{
+                        MessageBox.Show(
+                            message: "No se pudo eliminar el rubro",
+                            type: "error");
+                    }
                     break;
 
                 default:
@@ -118,10 +138,18 @@ namespace DesafioConfiteria
 		{
             current.Nombre = tbNombre.Text;
 
-            RubroBLL.ActualizarRubro(current);
-
-            SetupGridview();
-            upMain.Update();
+            if (RubroBLL.ActualizarRubro(current))
+			{
+                SetupGridview();
+                upMain.Update();
+			}
+			else
+			{
+                MessageBox.Show(
+                    title: "No se pudo modificar el rubro", 
+                    message: "Probablemente ese nombre ya está en uso",
+                    type: "error");
+            }
 
             current = null;
         }
@@ -133,10 +161,18 @@ namespace DesafioConfiteria
             rubro.FechaBaja = null;
             rubro.Nombre = tbNombre.Text;
 
-            RubroBLL.CrearRubro(rubro);
-
-            SetupGridview();
-            upMain.Update();
+            if (RubroBLL.CrearRubro(rubro))
+			{
+                SetupGridview();
+                upMain.Update();
+			}
+			else
+			{
+                MessageBox.Show(
+                    title: "No se crear modificar el rubro",
+                    message: "Probablemente ese nombre ya está en uso",
+                    type: "error");
+            }
         }
 
         protected void BtnNuevoRubro_click(object sender, EventArgs e)
