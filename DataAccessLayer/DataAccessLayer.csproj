@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalDAL.cs" />
+    <Compile Include="ArticuloDAL.cs" />
     <Compile Include="RubroDAL.cs" />
     <Compile Include="LocalDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

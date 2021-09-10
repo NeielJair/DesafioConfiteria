@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer
 {
-	public class RubroDAL : GlobalDAL
+	public class ArticuloDAL : GlobalDAL
 	{
-		public static List<Rubro> BuscarRubrosPorIdLocal(int idLocal)
+		public static List<Articulo> BuscarArticulosPorIdLocal(int idLocal)
 		{
-			List<Rubro> rubros = new List<Rubro>();
+			List<Articulo> articulos = new List<Articulo>();
 			using (SqlConnection conn = SetupConnection())
 			{
 				conn.Open();
 				SqlTransaction transaction = conn.BeginTransaction();
 
-				SqlCommand cmd = new SqlCommand("dbo.BuscarRubrosPorIdLocal", conn);
+				SqlCommand cmd = new SqlCommand("dbo.BuscarArticulosPorIdLocal", conn);
 				cmd.CommandType = System.Data.CommandType.StoredProcedure;
 				cmd.Parameters.AddWithValue("@IdLocal", idLocal);
 				cmd.Transaction = transaction;
@@ -30,13 +30,14 @@ namespace DataAccessLayer
 					{
 						while (rdr.Read())
 						{
-							Rubro rubro = new Rubro();
-							rubro.IdRubro = rdr.GetInt32(0);
-							rubro.IdLocal = idLocal;
-							rubro.FechaBaja = rdr.IsDBNull(1) ? (DateTime?)null : rdr.GetDateTime(1);
-							rubro.Nombre = rdr.GetString(2);
+							Articulo articulo = new Articulo();
+							articulo.IdArticulo = rdr.GetInt32(0);
+							articulo.IdLocal = idLocal;
+							articulo.FechaBaja = rdr.IsDBNull(1) ? (DateTime?)null : rdr.GetDateTime(1);
+							articulo.Nombre = rdr.GetString(2);
+							articulo.IdRubro = rdr.GetInt32(3);
 
-							rubros.Add(rubro);
+							articulos.Add(articulo);
 						}
 					}
 					transaction.Commit();
@@ -48,18 +49,18 @@ namespace DataAccessLayer
 				}
 			}
 
-			return rubros;
+			return articulos;
 		}
 
-		public static List<Rubro> BuscarRubrosActivosPorIdLocal(int idLocal)
+		public static List<Articulo> BuscarArticulosActivosPorIdLocal(int idLocal)
 		{
-			List<Rubro> rubros = new List<Rubro>();
+			List<Articulo> articulos = new List<Articulo>();
 			using (SqlConnection conn = SetupConnection())
 			{
 				conn.Open();
 				SqlTransaction transaction = conn.BeginTransaction();
 
-				SqlCommand cmd = new SqlCommand("dbo.BuscarRubrosActivosPorIdLocal", conn);
+				SqlCommand cmd = new SqlCommand("dbo.BuscarArticulosActivosPorIdLocal", conn);
 				cmd.CommandType = System.Data.CommandType.StoredProcedure;
 				cmd.Parameters.AddWithValue("@IdLocal", idLocal);
 				cmd.Transaction = transaction;
@@ -71,13 +72,14 @@ namespace DataAccessLayer
 					{
 						while (rdr.Read())
 						{
-							Rubro rubro = new Rubro();
-							rubro.IdRubro = rdr.GetInt32(0);
-							rubro.IdLocal = idLocal;
-							rubro.FechaBaja = null;
-							rubro.Nombre = rdr.GetString(1);
+							Articulo articulo = new Articulo();
+							articulo.IdArticulo = rdr.GetInt32(0);
+							articulo.IdLocal = idLocal;
+							articulo.FechaBaja = null;
+							articulo.Nombre = rdr.GetString(1);
+							articulo.IdRubro = rdr.GetInt32(2);
 
-							rubros.Add(rubro);
+							articulos.Add(articulo);
 						}
 					}
 					transaction.Commit();
@@ -89,44 +91,45 @@ namespace DataAccessLayer
 				}
 			}
 
-			return rubros;
+			return articulos;
 		}
 
-		public static Rubro BuscarRubroPorId(int id)
+		public static Articulo BuscarArticuloPorId(int id)
 		{
 			using (SqlConnection conn = SetupConnection())
 			{
 				conn.Open();
 				SqlTransaction transaction = conn.BeginTransaction();
 
-				SqlCommand cmd = new SqlCommand("dbo.BuscarRubroPorId", conn);
+				SqlCommand cmd = new SqlCommand("dbo.BuscarArticuloPorId", conn);
 				cmd.CommandType = System.Data.CommandType.StoredProcedure;
-				cmd.Parameters.AddWithValue("@IdRubro", id);
+				cmd.Parameters.AddWithValue("@IdArticulo", id);
 				cmd.Transaction = transaction;
 
 				try
 				{
 					cmd.ExecuteNonQuery();
-					Rubro rubro;
+					Articulo articulo;
 					using (SqlDataReader rdr = cmd.ExecuteReader())
 					{
 						if (rdr.Read())
 						{
-							// Se encontró un rubro
-							rubro = new Rubro();
-							rubro.IdRubro = id;
-							rubro.IdLocal = rdr.GetInt32(0);
-							rubro.FechaBaja = rdr.IsDBNull(1) ? (DateTime?)null : rdr.GetDateTime(1);
-							rubro.Nombre = rdr.GetString(2);
+							// Se encontró un artículo
+							articulo = new Articulo();
+							articulo.IdArticulo = id;
+							articulo.IdLocal = rdr.GetInt32(0);
+							articulo.FechaBaja = rdr.IsDBNull(1) ? (DateTime?)null : rdr.GetDateTime(1);
+							articulo.Nombre = rdr.GetString(2);
+							articulo.IdRubro = rdr.GetInt32(3);
 						}
 						else
 						{
-							// No se encontró un rubro
-							rubro = null;
+							// No se encontró un artículo
+							articulo = null;
 						}
 					}
 					transaction.Commit();
-					return rubro;
+					return articulo;
 				}
 				catch
 				{
@@ -136,18 +139,19 @@ namespace DataAccessLayer
 			}
 		}
 
-		public static bool ActualizarRubro(Rubro rubro)
+		public static bool ActualizarArticulo(Articulo articulo)
 		{
 			using (SqlConnection conn = SetupConnection())
 			{
 				conn.Open();
 				SqlTransaction transaction = conn.BeginTransaction();
 
-				SqlCommand cmd = new SqlCommand("dbo.ActualizarRubroPorId", conn);
+				SqlCommand cmd = new SqlCommand("dbo.ActualizarArticuloPorId", conn);
 				cmd.CommandType = System.Data.CommandType.StoredProcedure;
-				cmd.Parameters.AddWithValue("@IdRubro", rubro.IdRubro);
-				cmd.Parameters.AddWithValue("@FechaBaja", (object)rubro.FechaBaja ?? DBNull.Value);
-				cmd.Parameters.AddWithValue("@Nombre", rubro.Nombre);
+				cmd.Parameters.AddWithValue("@IdArticulo", articulo.IdArticulo);
+				cmd.Parameters.AddWithValue("@FechaBaja", (object)articulo.FechaBaja ?? DBNull.Value);
+				cmd.Parameters.AddWithValue("@Nombre", articulo.Nombre);
+				cmd.Parameters.AddWithValue("@IdRubro", articulo.IdRubro);
 				cmd.Transaction = transaction;
 
 				int result;
@@ -167,18 +171,19 @@ namespace DataAccessLayer
 			}
 		}
 
-		public static bool CrearRubro(Rubro rubro)
+		public static bool CrearArticulo(Articulo articulo)
 		{
 			using (SqlConnection conn = SetupConnection())
 			{
 				conn.Open();
 				SqlTransaction transaction = conn.BeginTransaction();
 
-				SqlCommand cmd = new SqlCommand("dbo.CrearRubro", conn);
+				SqlCommand cmd = new SqlCommand("dbo.CrearArticulo", conn);
 				cmd.CommandType = System.Data.CommandType.StoredProcedure;
-				cmd.Parameters.AddWithValue("@IdLocal", rubro.IdLocal);
-				cmd.Parameters.AddWithValue("@FechaBaja", (object)rubro.FechaBaja ?? DBNull.Value);
-				cmd.Parameters.AddWithValue("@Nombre", rubro.Nombre);
+				cmd.Parameters.AddWithValue("@IdLocal", articulo.IdLocal);
+				cmd.Parameters.AddWithValue("@FechaBaja", (object)articulo.FechaBaja ?? DBNull.Value);
+				cmd.Parameters.AddWithValue("@Nombre", articulo.Nombre);
+				cmd.Parameters.AddWithValue("@IdRubro", articulo.IdRubro);
 				cmd.Transaction = transaction;
 
 				int result;
@@ -198,16 +203,16 @@ namespace DataAccessLayer
 			}
 		}
 
-		public static bool EliminarRubroPorId(int id)
+		public static bool EliminarArticuloPorId(int id)
 		{
 			using (SqlConnection conn = SetupConnection())
 			{
 				conn.Open();
 				SqlTransaction transaction = conn.BeginTransaction();
 
-				SqlCommand cmd = new SqlCommand("dbo.EliminarRubroPorId", conn);
+				SqlCommand cmd = new SqlCommand("dbo.EliminarArticuloPorId", conn);
 				cmd.CommandType = System.Data.CommandType.StoredProcedure;
-				cmd.Parameters.AddWithValue("@IdRubro", id);
+				cmd.Parameters.AddWithValue("@IdArticulo", id);
 				cmd.Transaction = transaction;
 
 				int result;

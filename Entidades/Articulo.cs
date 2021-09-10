@@ -12,6 +12,6 @@ namespace Entidades
 		public int IdLocal { get; set; }
 		public DateTime? FechaBaja { get; set; }
 		public string Nombre { get; set; }
-		public int IdRubro { get; set; }
+		public int IdRubro;
 	}
 }
