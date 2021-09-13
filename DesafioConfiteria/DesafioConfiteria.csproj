@@ -110,6 +110,7 @@
     <Content Include="Content\Project\Global.css" />
     <Content Include="Content\Site.css" />
     <Content Include="ElegirLocal.aspx" />
+    <Content Include="GestionarMozos.aspx" />
     <Content Include="GestionarArticulos.aspx" />
     <Content Include="MainPage.aspx" />
     <Content Include="favicon.ico" />
@@ -237,6 +238,13 @@
     </Compile>
     <Compile Include="ElegirLocal.aspx.designer.cs">
       <DependentUpon>ElegirLocal.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GestionarMozos.aspx.cs">
+      <DependentUpon>GestionarMozos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GestionarMozos.aspx.designer.cs">
+      <DependentUpon>GestionarMozos.aspx</DependentUpon>
     </Compile>
     <Compile Include="GestionarArticulos.aspx.cs">
       <DependentUpon>GestionarArticulos.aspx</DependentUpon>

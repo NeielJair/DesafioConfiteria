@@ -11,10 +11,10 @@ using Utils;
 
 namespace DesafioConfiteria
 {
-	public partial class GestionarArticulos : System.Web.UI.Page
+	public partial class GestionarMozos : System.Web.UI.Page
 	{
         private static int idLocal;
-        private static Articulo current;
+        private static Mozo current;
 
         protected void Page_Load(object sender, EventArgs e)
 		{
@@ -30,68 +30,58 @@ namespace DesafioConfiteria
 		{
             DataTable dt = new DataTable();
             dt.Columns.AddRange(
-                new DataColumn[4] { 
+                new DataColumn[6] { 
                     new DataColumn("Id"), 
-                    new DataColumn("Nombre"), 
+                    new DataColumn("Documento"), 
+                    new DataColumn("Nombre"),
+                    new DataColumn("FechaContrato"),
                     new DataColumn("FechaBaja"),
-                    new DataColumn("Rubro")});
+                    new DataColumn("Comision")});
 
-            List<Articulo> articulos = ArticuloBLL.BuscarArticulosPorIdLocal(idLocal);
+            List<Mozo> mozos = MozoBLL.BuscarMozosPorIdLocal(idLocal);
 
-            foreach (Articulo articulo in articulos)
+            foreach (Mozo mozo in mozos)
             {
                 dt.Rows.Add(
-                    articulo.Id, 
-                    articulo.Nombre, 
-                    articulo.FechaBaja?.ToString() ?? "—", 
-                    $"{articulo.Rubro.Id} - {articulo.Rubro.Nombre}");
+                    mozo.Id, 
+                    mozo.Documento, 
+                    $"{mozo.Nombre} {mozo.Apellido}",
+                    mozo.FechaContrato.ToString(),
+                    mozo.FechaBaja?.ToString() ?? "—",
+                    $"{mozo.Comision}%");
             }
 
             gvRubros.DataSource = dt;
             gvRubros.DataBind();
         }
 
-        private void SetupModal(Articulo articulo)
+        private void SetupModal(Mozo mozo)
 		{
-            bool isCreate = articulo == null;
+            bool isCreate = mozo == null;
 
             btnGuardar.Visible = !isCreate;
             btnCrear.Visible = isCreate;
             upModalFooter.Update();
 
-            tbNombre.Text = (!isCreate) ? articulo.Nombre : "";
+            tbDocumento.Text = (!isCreate) ? mozo.Documento.ToString() : "";
+            tbNombre.Text = (!isCreate) ? mozo.Nombre : "";
+            tbApellido.Text = (!isCreate) ? mozo.Apellido : "";
+            tbComision.Text = (!isCreate) ? mozo.Comision.ToString() : "";
 
-            // Setup ddlRubro
-            ddlRubro.Items.Clear();
-            List<Rubro> rubros = RubroBLL.BuscarRubrosActivosPorIdLocal(idLocal);
-            ddlRubro.Items.Add(new ListItem("Seleccione un rubro", "-1"));
-            foreach (Rubro rubro in rubros)
-            {
-                ListItem item = new ListItem(rubro.Nombre, rubro.Id.ToString());
-                item.Attributes.Add("title", $"ID: {rubro.Id}");
-
-                ddlRubro.Items.Add(item);
-            }
-
-            if (articulo?.Rubro != null)
-			{
-                ddlRubro.Items.FindByValue(articulo.Rubro.Id.ToString()).Selected = true;
-            }
-
-            current = articulo;
+            current = mozo;
             upModal.Update();
         }
 
-        private Articulo RowToArticulo(GridViewRow row)
+        private Mozo RowToMozo(GridViewRow row)
 		{
-            return ArticuloBLL.BuscarArticuloPorId(Int32.Parse(row.Cells[0].Text));
+            return MozoBLL.BuscarMozoPorId(Int32.Parse(row.Cells[0].Text));
         }
 
         protected void GvRubros_RowDatabound(object sender, GridViewRowEventArgs e)
         {
             // Cambiar el texto del botón si es que el rubro no está vigente
-            bool estaVigente = e.Row.Cells[2].Text == "—";
-            foreach (Control ctrl in e.Row.Cells[4].Controls)
+            bool estaVigente = e.Row.Cells[4].Text == "—";
+            foreach (Control ctrl in e.Row.Cells[6].Controls)
 			{
                 if (estaVigente && ctrl.ID == "btnGvReactivar")
                 {
@@ -110,39 +100,39 @@ namespace DesafioConfiteria
 
             int rowIndex = Convert.ToInt32(e.CommandArgument);
             GridViewRow row = gvRubros.Rows[rowIndex];
-            Articulo articulo = RowToArticulo(row);
+            Mozo mozo = RowToMozo(row);
 
             switch (e.CommandName)
             {
                 case "Modificar":
-                    SetupModal(articulo);
+                    SetupModal(mozo);
                     break;
 
                 case "Dar de baja":
-                    articulo.FechaBaja = DateTime.Now;
-                    if (!ArticuloBLL.ActualizarArticulo(articulo))
+                    mozo.FechaBaja = DateTime.Now;
+                    if (!MozoBLL.ActualizarMozo(mozo))
 					{
                         MessageBox.Show(
-                            message: "No se pudo actualizar el artículo",
+                            message: "No se pudieron actualizar los datos del mozo",
                             type: "error");
                     }
                     break;
 
                 case "Reactivar":
-                    articulo.FechaBaja = null;
-                    if (!ArticuloBLL.ActualizarArticulo(articulo))
+                    mozo.FechaBaja = null;
+                    if (!MozoBLL.ActualizarMozo(mozo))
 					{
                         MessageBox.Show(
-                            message: "No se pudo actualizar el artículo",
+                            message: "No se pudieron actualizar los datos del mozo",
                             type: "error");
                     }
                     break;
 
                 case "Eliminar":
-                    if (!ArticuloBLL.EliminarArticuloPorId(articulo.Id))
+                    if (!MozoBLL.EliminarMozoPorId(mozo.Id))
 					{
                         MessageBox.Show(
-                            message: "No se pudo eliminar el artículo",
+                            message: "No se pudieron eliminar los datos del mozo",
                             type: "error");
                     }
                     break;
@@ -158,9 +148,11 @@ namespace DesafioConfiteria
         protected void BtnGuardar_click(object sender, EventArgs e)
 		{
             current.Nombre = tbNombre.Text;
-            current.Rubro.Id = Int32.Parse(ddlRubro.SelectedValue);
+            current.Apellido = tbApellido.Text;
+            current.Documento = Int32.Parse(tbDocumento.Text);
+            current.Comision = Double.Parse(tbComision.Text);
 
-            if (ArticuloBLL.ActualizarArticulo(current))
+            if (MozoBLL.ActualizarMozo(current))
 			{
                 SetupGridview();
                 upMain.Update();
@@ -168,8 +160,7 @@ namespace DesafioConfiteria
 			else
 			{
                 MessageBox.Show(
-                    title: "No se pudo modificar el artículo", 
-                    message: "Probablemente ese nombre ya está en uso",
+                    message: "No se pudieron actualizar los datos del mozo",
                     type: "error");
             }
 
@@ -178,15 +169,16 @@ namespace DesafioConfiteria
 
         protected void BtnCrear_click(object sender, EventArgs e)
         {
-            Articulo articulo = new Articulo();
-            articulo.IdLocal = idLocal;
-            articulo.FechaBaja = null;
-            articulo.Nombre = tbNombre.Text;
+            Mozo mozo = new Mozo();
+            mozo.IdLocal = idLocal;
+            mozo.FechaBaja = null;
+            mozo.FechaContrato = DateTime.Now;
+            mozo.Nombre = tbNombre.Text;
+            mozo.Apellido = tbApellido.Text;
+            mozo.Documento = Int32.Parse(tbDocumento.Text);
+            mozo.Comision = Single.Parse(tbComision.Text);
 
-            articulo.Rubro = new Rubro();
-            articulo.Rubro.Id = Int32.Parse(ddlRubro.SelectedValue);
-
-            if (ArticuloBLL.CrearArticulo(articulo))
+            if (MozoBLL.CrearMozo(mozo))
 			{
                 SetupGridview();
                 upMain.Update();
@@ -194,13 +186,12 @@ namespace DesafioConfiteria
 			else
 			{
                 MessageBox.Show(
-                    title: "No se pudo crear el artículo",
-                    message: "Probablemente ese nombre ya está en uso",
+                    message: "No se crear el mozo",
                     type: "error");
             }
         }
 
-        protected void BtnNuevoArticulo_click(object sender, EventArgs e)
+        protected void BtnNuevoMozo_click(object sender, EventArgs e)
 		{
             SetupModal(null);
         }

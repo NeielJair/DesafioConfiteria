@@ -15,6 +15,6 @@ namespace Entidades
 		public string Nombre { get; set; }
 		public string Apellido { get; set; }
 		public int Documento { get; set; }
-		public float Comision { get; set; }
+		public double Comision { get; set; }
 	}
 }

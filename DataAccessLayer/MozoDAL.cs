@@ -37,7 +37,7 @@ namespace DataAccessLayer
 							mozo.Nombre = rdr.GetString(3);
 							mozo.Apellido = rdr.GetString(4);
 							mozo.Documento = rdr.GetInt32(5);
-							mozo.Comision = rdr.GetFloat(6);
+							mozo.Comision = rdr.GetDouble(6);
 
 							mozos.Add(mozo);
 						}
@@ -81,7 +81,7 @@ namespace DataAccessLayer
 							mozo.Nombre = rdr.GetString(2);
 							mozo.Apellido = rdr.GetString(3);
 							mozo.Documento = rdr.GetInt32(4);
-							mozo.Comision = rdr.GetFloat(5);
+							mozo.Comision = rdr.GetDouble(5);
 
 							mozos.Add(mozo);
 						}
@@ -105,35 +105,9 @@ namespace DataAccessLayer
 				conn.Open();
 				SqlTransaction transaction = conn.BeginTransaction();
 
-				SqlCommand cmd = new SqlCommand("dbo.BuscarMozoPorId", conn);
-				cmd.CommandType = System.Data.CommandType.StoredProcedure;
-				cmd.Parameters.AddWithValue("@IdMozo", id);
-				cmd.Transaction = transaction;
-
 				try
 				{
-					Mozo mozo;
-					using (SqlDataReader rdr = cmd.ExecuteReader())
-					{
-						if (rdr.Read())
-						{
-							// Se encontró un mozo
-							mozo = new Mozo();
-							mozo.Id = id;
-							mozo.IdLocal = rdr.GetInt32(0);
-							mozo.FechaBaja = rdr.IsDBNull(1) ? (DateTime?)null : rdr.GetDateTime(1);
-							mozo.FechaContrato = rdr.GetDateTime(2);
-							mozo.Nombre = rdr.GetString(3);
-							mozo.Apellido = rdr.GetString(4);
-							mozo.Documento = rdr.GetInt32(5);
-							mozo.Comision = rdr.GetFloat(6);
-						}
-						else
-						{
-							// No se encontró un mozo
-							mozo = null;
-						}
-					}
+					Mozo mozo = BuscarMozoPorId_Unsafe(conn, transaction, id);
 					transaction.Commit();
 					return mozo;
 				}
@@ -241,6 +215,53 @@ namespace DataAccessLayer
 				}
 
 				return result > 0;
+			}
+		}
+
+		/// <summary>
+		/// Busca mozo por id asumiendo una conexión abierta y
+		/// una transacción iniciada y manipulada externamente
+		/// </summary>
+		/// <param name="conn">Conexión ya abierta</param>
+		/// <param name="transaction">Transacción ya iniciada</param>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public static Mozo BuscarMozoPorId_Unsafe(SqlConnection conn, SqlTransaction transaction, int id)
+		{
+			SqlCommand cmd = new SqlCommand("dbo.BuscarMozoPorId", conn);
+			cmd.CommandType = System.Data.CommandType.StoredProcedure;
+			cmd.Parameters.AddWithValue("@IdMozo", id);
+			cmd.Transaction = transaction;
+
+			try
+			{
+				Mozo mozo;
+				using (SqlDataReader rdr = cmd.ExecuteReader())
+				{
+					if (rdr.Read())
+					{
+						// Se encontró un mozo
+						mozo = new Mozo();
+						mozo.Id = id;
+						mozo.IdLocal = rdr.GetInt32(0);
+						mozo.FechaBaja = rdr.IsDBNull(1) ? (DateTime?)null : rdr.GetDateTime(1);
+						mozo.FechaContrato = rdr.GetDateTime(2);
+						mozo.Nombre = rdr.GetString(3);
+						mozo.Apellido = rdr.GetString(4);
+						mozo.Documento = rdr.GetInt32(5);
+						mozo.Comision = rdr.GetDouble(6);
+					}
+					else
+					{
+						// No se encontró un mozo
+						mozo = null;
+					}
+				}
+				return mozo;
+			}
+			catch
+			{
+				throw;
 			}
 		}
 	}

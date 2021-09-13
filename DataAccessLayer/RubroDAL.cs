@@ -97,31 +97,9 @@ namespace DataAccessLayer
 				conn.Open();
 				SqlTransaction transaction = conn.BeginTransaction();
 
-				SqlCommand cmd = new SqlCommand("dbo.BuscarRubroPorId", conn);
-				cmd.CommandType = System.Data.CommandType.StoredProcedure;
-				cmd.Parameters.AddWithValue("@IdRubro", id);
-				cmd.Transaction = transaction;
-
 				try
 				{
-					Rubro rubro;
-					using (SqlDataReader rdr = cmd.ExecuteReader())
-					{
-						if (rdr.Read())
-						{
-							// Se encontró un rubro
-							rubro = new Rubro();
-							rubro.Id = id;
-							rubro.IdLocal = rdr.GetInt32(0);
-							rubro.FechaBaja = rdr.IsDBNull(1) ? (DateTime?)null : rdr.GetDateTime(1);
-							rubro.Nombre = rdr.GetString(2);
-						}
-						else
-						{
-							// No se encontró un rubro
-							rubro = null;
-						}
-					}
+					Rubro rubro = BuscarRubroPorId_Unsafe(conn, transaction, id);
 					transaction.Commit();
 					return rubro;
 				}
@@ -130,49 +108,6 @@ namespace DataAccessLayer
 					transaction.Rollback();
 					throw;
 				}
-			}
-		}
-
-		/// <summary>
-		/// Busca rubro por id asumiendo una conexión abierta y
-		/// una transacción iniciada y manipulada externamente
-		/// </summary>
-		/// <param name="conn">Conexión ya abierta</param>
-		/// <param name="transaction">Transacción ya iniciada</param>
-		/// <param name="id"></param>
-		/// <returns></returns>
-		public static Rubro BuscarRubroPorId_Unsafe(SqlConnection conn, SqlTransaction transaction, int id)
-		{
-			SqlCommand cmd = new SqlCommand("dbo.BuscarRubroPorId", conn);
-			cmd.CommandType = System.Data.CommandType.StoredProcedure;
-			cmd.Parameters.AddWithValue("@IdRubro", id);
-			cmd.Transaction = transaction;
-
-			try
-			{
-				Rubro rubro;
-				using (SqlDataReader rdr = cmd.ExecuteReader())
-				{
-					if (rdr.Read())
-					{
-						// Se encontró un rubro
-						rubro = new Rubro();
-						rubro.Id = id;
-						rubro.IdLocal = rdr.GetInt32(0);
-						rubro.FechaBaja = rdr.IsDBNull(1) ? (DateTime?)null : rdr.GetDateTime(1);
-						rubro.Nombre = rdr.GetString(2);
-					}
-					else
-					{
-						// No se encontró un rubro
-						rubro = null;
-					}
-				}
-				return rubro;
-			}
-			catch
-			{
-				throw;
 			}
 		}
 
@@ -264,6 +199,49 @@ namespace DataAccessLayer
 				}
 
 				return result > 0;
+			}
+		}
+
+		/// <summary>
+		/// Busca rubro por id asumiendo una conexión abierta y
+		/// una transacción iniciada y manipulada externamente
+		/// </summary>
+		/// <param name="conn">Conexión ya abierta</param>
+		/// <param name="transaction">Transacción ya iniciada</param>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public static Rubro BuscarRubroPorId_Unsafe(SqlConnection conn, SqlTransaction transaction, int id)
+		{
+			SqlCommand cmd = new SqlCommand("dbo.BuscarRubroPorId", conn);
+			cmd.CommandType = System.Data.CommandType.StoredProcedure;
+			cmd.Parameters.AddWithValue("@IdRubro", id);
+			cmd.Transaction = transaction;
+
+			try
+			{
+				Rubro rubro;
+				using (SqlDataReader rdr = cmd.ExecuteReader())
+				{
+					if (rdr.Read())
+					{
+						// Se encontró un rubro
+						rubro = new Rubro();
+						rubro.Id = id;
+						rubro.IdLocal = rdr.GetInt32(0);
+						rubro.FechaBaja = rdr.IsDBNull(1) ? (DateTime?)null : rdr.GetDateTime(1);
+						rubro.Nombre = rdr.GetString(2);
+					}
+					else
+					{
+						// No se encontró un rubro
+						rubro = null;
+					}
+				}
+				return rubro;
+			}
+			catch
+			{
+				throw;
 			}
 		}
 	}

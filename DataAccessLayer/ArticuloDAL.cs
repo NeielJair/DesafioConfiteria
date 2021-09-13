@@ -101,33 +101,9 @@ namespace DataAccessLayer
 				conn.Open();
 				SqlTransaction transaction = conn.BeginTransaction();
 
-				SqlCommand cmd = new SqlCommand("dbo.BuscarArticuloPorId", conn);
-				cmd.CommandType = System.Data.CommandType.StoredProcedure;
-				cmd.Parameters.AddWithValue("@IdArticulo", id);
-				cmd.Transaction = transaction;
-
 				try
 				{
-					Articulo articulo;
-					using (SqlDataReader rdr = cmd.ExecuteReader())
-					{
-						if (rdr.Read())
-						{
-							// Se encontró un artículo
-							articulo = new Articulo();
-							articulo.Id = id;
-							articulo.IdLocal = rdr.GetInt32(0);
-							articulo.FechaBaja = rdr.IsDBNull(1) ? (DateTime?)null : rdr.GetDateTime(1);
-							articulo.Nombre = rdr.GetString(2);
-
-							articulo.Rubro = RubroDAL.BuscarRubroPorId_Unsafe(conn, transaction, id: rdr.GetInt32(3));
-						}
-						else
-						{
-							// No se encontró un artículo
-							articulo = null;
-						}
-					}
+					Articulo articulo = BuscarArticuloPorId_Unsafe(conn, transaction, id);
 					transaction.Commit();
 					return articulo;
 				}
@@ -229,6 +205,51 @@ namespace DataAccessLayer
 				}
 
 				return result > 0;
+			}
+		}
+
+		/// <summary>
+		/// Busca artículo por id asumiendo una conexión abierta y
+		/// una transacción iniciada y manipulada externamente
+		/// </summary>
+		/// <param name="conn">Conexión ya abierta</param>
+		/// <param name="transaction">Transacción ya iniciada</param>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public static Articulo BuscarArticuloPorId_Unsafe(SqlConnection conn, SqlTransaction transaction, int id)
+		{
+			SqlCommand cmd = new SqlCommand("dbo.BuscarArticuloPorId", conn);
+			cmd.CommandType = System.Data.CommandType.StoredProcedure;
+			cmd.Parameters.AddWithValue("@IdArticulo", id);
+			cmd.Transaction = transaction;
+
+			try
+			{
+				Articulo articulo;
+				using (SqlDataReader rdr = cmd.ExecuteReader())
+				{
+					if (rdr.Read())
+					{
+						// Se encontró un artículo
+						articulo = new Articulo();
+						articulo.Id = id;
+						articulo.IdLocal = rdr.GetInt32(0);
+						articulo.FechaBaja = rdr.IsDBNull(1) ? (DateTime?)null : rdr.GetDateTime(1);
+						articulo.Nombre = rdr.GetString(2);
+
+						articulo.Rubro = RubroDAL.BuscarRubroPorId_Unsafe(conn, transaction, id: rdr.GetInt32(3));
+					}
+					else
+					{
+						// No se encontró un artículo
+						articulo = null;
+					}
+				}
+				return articulo;
+			}
+			catch
+			{
+				throw;
 			}
 		}
 	}

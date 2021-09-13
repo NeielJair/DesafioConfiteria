@@ -3,9 +3,9 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 	<asp:UpdatePanel ID="upMain" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="false">
 		<ContentTemplate>
-			<asp:LinkButton ID="btnNuevoArticulo" runat="server" Text="Crear nuevo artículo" CssClass="btn btn-success my-3" OnClientClick="showModal('modalModificar', 'Crear nuevo artículo', 'Crear')" OnClick="BtnNuevoArticulo_click">
+			<asp:LinkButton ID="btnNuevoArticulo" runat="server" CssClass="btn btn-success my-3" OnClientClick="showModal('modalModificar', 'Crear nuevo artículo', 'Crear')" OnClick="BtnNuevoArticulo_click">
 				<i class="bi-plus-lg" aria-hidden="true"></i>
-				Crear nuevo rubro
+				Crear nuevo artículo
 			</asp:LinkButton>
 			<div class="row">
 				<div class="col-9 text-center align-self-center">
@@ -112,7 +112,7 @@
 			}
 
 			if (valid) {
-				closeModal();
+				closeModal('modalModificar');
 			}
 
 			return valid;

@@ -169,7 +169,7 @@ namespace DesafioConfiteria
 			else
 			{
                 MessageBox.Show(
-                    title: "No se crear modificar el rubro",
+                    title: "No se pudo crear el rubro",
                     message: "Probablemente ese nombre ya está en uso",
                     type: "error");
             }

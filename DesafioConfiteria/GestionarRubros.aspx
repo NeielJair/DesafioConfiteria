@@ -3,7 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 	<asp:UpdatePanel ID="upMain" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="false">
 		<ContentTemplate>
-			<asp:LinkButton ID="btnNuevoRubro" runat="server" Text="Crear nuevo rubro" CssClass="btn btn-success my-3" OnClientClick="showModal('modalModificarRubro', 'Crear nuevo rubro', 'Crear')" OnClick="BtnNuevoRubro_click">
+			<asp:LinkButton ID="btnNuevoRubro" runat="server" Text="Crear nuevo rubro" CssClass="btn btn-success my-3" OnClientClick="showModal('modalModificar', 'Crear nuevo rubro', 'Crear')" OnClick="BtnNuevoRubro_click">
 				<i class="bi-plus-lg" aria-hidden="true"></i>
 				Crear nuevo rubro
 			</asp:LinkButton>
@@ -18,7 +18,7 @@
                                 <ItemTemplate>
 									<div class="row">
 										<div class="col">
-											<asp:LinkButton runat="server" CommandName="Modificar" CssClass="btn btn-primary" CommandArgument="<%# Container.DataItemIndex %>" OnClientClick="showModal('modalModificarRubro', 'Modificar rubro', 'Guardar')">
+											<asp:LinkButton runat="server" CommandName="Modificar" CssClass="btn btn-primary" CommandArgument="<%# Container.DataItemIndex %>" OnClientClick="showModal('modalModificar', 'Modificar rubro', 'Guardar')">
 												<i class="bi-pencil" aria-hidden="true"></i>
 												Modificar
 											</asp:LinkButton>
@@ -51,7 +51,7 @@
 		</ContentTemplate>
 	</asp:UpdatePanel>
 
-	<div class="modal fade" id="modalModificarRubro" tabindex="-1" role="dialog">
+	<div class="modal fade" id="modalModificar" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -76,7 +76,7 @@
 						<ContentTemplate>
 							<asp:Button ID="btnGuardar" runat="server" Text="Guardar" CssClass="btn btn-primary modal-confirm-btn" OnClientClick="return modalValidate();" OnClick="BtnGuardar_click" />
 							<asp:Button ID="btnCrear" runat="server" Text="Crear" CssClass="btn btn-primary modal-confirm-btn" OnClientClick="return modalValidate();" OnClick="BtnCrear_click" />
-							<button type="button" class="btn btn-secondary" onclick="closeModal();">Cerrar</button>
+							<button type="button" class="btn btn-secondary" onclick="closeModal('modalModificar');">Cerrar</button>
 						</ContentTemplate>
 					</asp:UpdatePanel>
                 </div>
@@ -85,18 +85,6 @@
     </div>
 
     <script>
-		function showModal(title, btnConfirm) {
-			var mdl = $('#modalModificarRubro');
-			mdl.find('.modal-title').text(title);
-			mdl.find('.modal-confirm-btn').text(btnConfirm);
-			mdl.modal('show');
-		}
-
-		function closeModal() {
-			var mdl = $('#modalModificarRubro');
-			mdl.modal('hide');
-		}
-
 		function modalValidate() {
 			var valid = true;
 
@@ -111,37 +99,10 @@
 			}
 
 			if (valid) {
-				closeModal();
+				closeModal('modalModificar');
 			}
 
 			return valid;
-		}
-
-		function swalWarningConfirm(btn, content) {
-			if (btn.dataset.confirmed) {
-				// Si la acción ya fue confirmada, proceder
-				btn.dataset.confirmed = false;
-				return true;
-			} else {
-				// Pedirle confirmación al usuario
-				event.preventDefault();
-				swal({
-					text: content,
-					icon: "warning",
-					buttons: ["No", "Sí"],
-					dangerMode: true
-				})
-					.then(function (response) {
-						if (response) {
-							// Confirmar que el próximo evento de click debe ser ignorado
-							//en la parte de JS
-							btn.dataset.confirmed = true;
-							btn.click();
-						}
-					}).catch(function (reason) {
-						// La acción fue cancelada
-					});
-			}
 		}
 	</script>
 </asp:Content>
