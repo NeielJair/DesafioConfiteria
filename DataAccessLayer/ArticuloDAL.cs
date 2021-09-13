@@ -25,17 +25,17 @@ namespace DataAccessLayer
 
 				try
 				{
-					cmd.ExecuteNonQuery();
 					using (SqlDataReader rdr = cmd.ExecuteReader())
 					{
 						while (rdr.Read())
 						{
 							Articulo articulo = new Articulo();
-							articulo.IdArticulo = rdr.GetInt32(0);
+							articulo.Id = rdr.GetInt32(0);
 							articulo.IdLocal = idLocal;
 							articulo.FechaBaja = rdr.IsDBNull(1) ? (DateTime?)null : rdr.GetDateTime(1);
 							articulo.Nombre = rdr.GetString(2);
-							articulo.IdRubro = rdr.GetInt32(3);
+
+							articulo.Rubro = RubroDAL.BuscarRubroPorId_Unsafe(conn, transaction, id: rdr.GetInt32(3));
 
 							articulos.Add(articulo);
 						}
@@ -67,17 +67,17 @@ namespace DataAccessLayer
 
 				try
 				{
-					cmd.ExecuteNonQuery();
 					using (SqlDataReader rdr = cmd.ExecuteReader())
 					{
 						while (rdr.Read())
 						{
 							Articulo articulo = new Articulo();
-							articulo.IdArticulo = rdr.GetInt32(0);
+							articulo.Id = rdr.GetInt32(0);
 							articulo.IdLocal = idLocal;
 							articulo.FechaBaja = null;
 							articulo.Nombre = rdr.GetString(1);
-							articulo.IdRubro = rdr.GetInt32(2);
+
+							articulo.Rubro = RubroDAL.BuscarRubroPorId_Unsafe(conn, transaction, id: rdr.GetInt32(2));
 
 							articulos.Add(articulo);
 						}
@@ -108,7 +108,6 @@ namespace DataAccessLayer
 
 				try
 				{
-					cmd.ExecuteNonQuery();
 					Articulo articulo;
 					using (SqlDataReader rdr = cmd.ExecuteReader())
 					{
@@ -116,11 +115,12 @@ namespace DataAccessLayer
 						{
 							// Se encontró un artículo
 							articulo = new Articulo();
-							articulo.IdArticulo = id;
+							articulo.Id = id;
 							articulo.IdLocal = rdr.GetInt32(0);
 							articulo.FechaBaja = rdr.IsDBNull(1) ? (DateTime?)null : rdr.GetDateTime(1);
 							articulo.Nombre = rdr.GetString(2);
-							articulo.IdRubro = rdr.GetInt32(3);
+
+							articulo.Rubro = RubroDAL.BuscarRubroPorId_Unsafe(conn, transaction, id: rdr.GetInt32(3));
 						}
 						else
 						{
@@ -148,10 +148,10 @@ namespace DataAccessLayer
 
 				SqlCommand cmd = new SqlCommand("dbo.ActualizarArticuloPorId", conn);
 				cmd.CommandType = System.Data.CommandType.StoredProcedure;
-				cmd.Parameters.AddWithValue("@IdArticulo", articulo.IdArticulo);
+				cmd.Parameters.AddWithValue("@IdArticulo", articulo.Id);
 				cmd.Parameters.AddWithValue("@FechaBaja", (object)articulo.FechaBaja ?? DBNull.Value);
 				cmd.Parameters.AddWithValue("@Nombre", articulo.Nombre);
-				cmd.Parameters.AddWithValue("@IdRubro", articulo.IdRubro);
+				cmd.Parameters.AddWithValue("@IdRubro", articulo.Rubro.Id);
 				cmd.Transaction = transaction;
 
 				int result;
@@ -183,7 +183,7 @@ namespace DataAccessLayer
 				cmd.Parameters.AddWithValue("@IdLocal", articulo.IdLocal);
 				cmd.Parameters.AddWithValue("@FechaBaja", (object)articulo.FechaBaja ?? DBNull.Value);
 				cmd.Parameters.AddWithValue("@Nombre", articulo.Nombre);
-				cmd.Parameters.AddWithValue("@IdRubro", articulo.IdRubro);
+				cmd.Parameters.AddWithValue("@IdRubro", articulo.Rubro.Id);
 				cmd.Transaction = transaction;
 
 				int result;

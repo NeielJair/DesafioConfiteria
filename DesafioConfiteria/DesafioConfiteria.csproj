@@ -110,6 +110,7 @@
     <Content Include="Content\Project\Global.css" />
     <Content Include="Content\Site.css" />
     <Content Include="ElegirLocal.aspx" />
+    <Content Include="GestionarArticulos.aspx" />
     <Content Include="MainPage.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -132,6 +133,7 @@
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\Project\Global.js" />
     <Content Include="Scripts\src\index.js" />
     <Content Include="Scripts\src\methods\defaults.js" />
     <Content Include="Scripts\src\methods\destroy.js" />
@@ -235,6 +237,13 @@
     </Compile>
     <Compile Include="ElegirLocal.aspx.designer.cs">
       <DependentUpon>ElegirLocal.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GestionarArticulos.aspx.cs">
+      <DependentUpon>GestionarArticulos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GestionarArticulos.aspx.designer.cs">
+      <DependentUpon>GestionarArticulos.aspx</DependentUpon>
     </Compile>
     <Compile Include="MainPage.aspx.cs">
       <DependentUpon>MainPage.aspx</DependentUpon>

@@ -11,10 +11,10 @@ using Utils;
 
 namespace DesafioConfiteria
 {
-	public partial class GestionarRubros : System.Web.UI.Page
+	public partial class GestionarArticulos : System.Web.UI.Page
 	{
         private static int idLocal;
-        private static Rubro current;
+        private static Articulo current;
 
         protected void Page_Load(object sender, EventArgs e)
 		{
@@ -29,48 +29,69 @@ namespace DesafioConfiteria
         private void SetupGridview()
 		{
             DataTable dt = new DataTable();
-            dt.Columns.AddRange(new DataColumn[3] { new DataColumn("Id"), new DataColumn("Nombre"), new DataColumn("FechaBaja") });
+            dt.Columns.AddRange(
+                new DataColumn[4] { 
+                    new DataColumn("Id"), 
+                    new DataColumn("Nombre"), 
+                    new DataColumn("FechaBaja"),
+                    new DataColumn("Rubro")});
 
-            List<Rubro> rubros = RubroBLL.BuscarRubrosPorIdLocal(idLocal);
+            List<Articulo> articulos = ArticuloBLL.BuscarArticulosPorIdLocal(idLocal);
 
-            foreach (Rubro rubro in rubros)
+            foreach (Articulo articulo in articulos)
             {
-                dt.Rows.Add(rubro.Id, rubro.Nombre, rubro.FechaBaja?.ToString() ?? "—");
+                dt.Rows.Add(
+                    articulo.Id, 
+                    articulo.Nombre, 
+                    articulo.FechaBaja?.ToString() ?? "—", 
+                    $"{articulo.Rubro.Id} - {articulo.Rubro.Nombre}");
             }
 
             gvRubros.DataSource = dt;
             gvRubros.DataBind();
         }
 
-        private void SetupModal(Rubro rubro)
+        private void SetupModal(Articulo articulo)
 		{
-            bool isCreate = rubro == null;
+            bool isCreate = articulo == null;
 
             btnGuardar.Visible = !isCreate;
             btnCrear.Visible = isCreate;
             upModalFooter.Update();
 
-            tbNombre.Text = (!isCreate) ? rubro.Nombre : "";
+            tbNombre.Text = (!isCreate) ? articulo.Nombre : "";
 
-            current = rubro;
+            // Setup ddlRubro
+            ddlRubro.Items.Clear();
+            List<Rubro> rubros = RubroBLL.BuscarRubrosActivosPorIdLocal(idLocal);
+            ddlRubro.Items.Add(new ListItem("Seleccione un rubro", "-1"));
+            foreach (Rubro rubro in rubros)
+            {
+                ListItem item = new ListItem(rubro.Nombre, rubro.Id.ToString());
+                item.Attributes.Add("title", $"ID: {rubro.Id}");
+
+                ddlRubro.Items.Add(item);
+            }
+
+            if (articulo?.Rubro != null)
+			{
+                ddlRubro.Items.FindByValue(articulo.Rubro.Id.ToString()).Selected = true;
+            }
+
+            current = articulo;
             upModal.Update();
         }
 
-        private Rubro RowToRubro(GridViewRow row)
+        private Articulo RowToArticulo(GridViewRow row)
 		{
-            Rubro rubro = new Rubro();
-            rubro.Id = Int32.Parse(row.Cells[0].Text);
-            rubro.IdLocal = idLocal;
-            rubro.Nombre = row.Cells[1].Text;
-            rubro.FechaBaja = (row.Cells[2].Text != "—") ? DateTime.Parse(row.Cells[2].Text) : (DateTime?)null;
-            return rubro;
+            return ArticuloBLL.BuscarArticuloPorId(Int32.Parse(row.Cells[0].Text));
         }
 
         protected void GvRubros_RowDatabound(object sender, GridViewRowEventArgs e)
         {
             // Cambiar el texto del botón si es que el rubro no está vigente
             bool estaVigente = e.Row.Cells[2].Text == "—";
-            foreach (Control ctrl in e.Row.Cells[3].Controls)
+            foreach (Control ctrl in e.Row.Cells[4].Controls)
 			{
                 if (estaVigente && ctrl.ID == "btnGvReactivar")
                 {
@@ -89,39 +110,39 @@ namespace DesafioConfiteria
 
             int rowIndex = Convert.ToInt32(e.CommandArgument);
             GridViewRow row = gvRubros.Rows[rowIndex];
-            Rubro rubro = RowToRubro(row);
+            Articulo articulo = RowToArticulo(row);
 
             switch (e.CommandName)
             {
                 case "Modificar":
-                    SetupModal(rubro);
+                    SetupModal(articulo);
                     break;
 
                 case "Dar de baja":
-                    rubro.FechaBaja = DateTime.Now;
-                    if (!RubroBLL.ActualizarRubro(rubro))
+                    articulo.FechaBaja = DateTime.Now;
+                    if (!ArticuloBLL.ActualizarArticulo(articulo))
 					{
                         MessageBox.Show(
-                            message: "No se pudo actualizar el rubro",
+                            message: "No se pudo actualizar el artículo",
                             type: "error");
                     }
                     break;
 
                 case "Reactivar":
-                    rubro.FechaBaja = null;
-                    if (!RubroBLL.ActualizarRubro(rubro))
+                    articulo.FechaBaja = null;
+                    if (!ArticuloBLL.ActualizarArticulo(articulo))
 					{
                         MessageBox.Show(
-                            message: "No se pudo actualizar el rubro",
+                            message: "No se pudo actualizar el artículo",
                             type: "error");
                     }
                     break;
 
                 case "Eliminar":
-                    if (!RubroBLL.EliminarRubroPorId(rubro.Id))
+                    if (!ArticuloBLL.EliminarArticuloPorId(articulo.Id))
 					{
                         MessageBox.Show(
-                            message: "No se pudo eliminar el rubro",
+                            message: "No se pudo eliminar el artículo",
                             type: "error");
                     }
                     break;
@@ -137,8 +158,9 @@ namespace DesafioConfiteria
         protected void BtnGuardar_click(object sender, EventArgs e)
 		{
             current.Nombre = tbNombre.Text;
+            current.Rubro.Id = Int32.Parse(ddlRubro.SelectedValue);
 
-            if (RubroBLL.ActualizarRubro(current))
+            if (ArticuloBLL.ActualizarArticulo(current))
 			{
                 SetupGridview();
                 upMain.Update();
@@ -146,7 +168,7 @@ namespace DesafioConfiteria
 			else
 			{
                 MessageBox.Show(
-                    title: "No se pudo modificar el rubro", 
+                    title: "No se pudo modificar el artículo", 
                     message: "Probablemente ese nombre ya está en uso",
                     type: "error");
             }
@@ -156,12 +178,15 @@ namespace DesafioConfiteria
 
         protected void BtnCrear_click(object sender, EventArgs e)
         {
-            Rubro rubro = new Rubro();
-            rubro.IdLocal = idLocal;
-            rubro.FechaBaja = null;
-            rubro.Nombre = tbNombre.Text;
+            Articulo articulo = new Articulo();
+            articulo.IdLocal = idLocal;
+            articulo.FechaBaja = null;
+            articulo.Nombre = tbNombre.Text;
 
-            if (RubroBLL.CrearRubro(rubro))
+            articulo.Rubro = new Rubro();
+            articulo.Rubro.Id = Int32.Parse(ddlRubro.SelectedValue);
+
+            if (ArticuloBLL.CrearArticulo(articulo))
 			{
                 SetupGridview();
                 upMain.Update();
@@ -169,13 +194,13 @@ namespace DesafioConfiteria
 			else
 			{
                 MessageBox.Show(
-                    title: "No se crear modificar el rubro",
+                    title: "No se crear modificar el artículo",
                     message: "Probablemente ese nombre ya está en uso",
                     type: "error");
             }
         }
 
-        protected void BtnNuevoRubro_click(object sender, EventArgs e)
+        protected void BtnNuevoArticulo_click(object sender, EventArgs e)
 		{
             SetupModal(null);
         }

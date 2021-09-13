@@ -8,10 +8,10 @@ namespace Entidades
 {
 	public class Articulo
 	{
-		public int IdArticulo { get; set; }
+		public int Id { get; set; }
 		public int IdLocal { get; set; }
 		public DateTime? FechaBaja { get; set; }
 		public string Nombre { get; set; }
-		public int IdRubro;
+		public Rubro Rubro;
 	}
 }

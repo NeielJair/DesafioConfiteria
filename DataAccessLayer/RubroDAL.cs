@@ -25,13 +25,12 @@ namespace DataAccessLayer
 
 				try
 				{
-					cmd.ExecuteNonQuery();
 					using (SqlDataReader rdr = cmd.ExecuteReader())
 					{
 						while (rdr.Read())
 						{
 							Rubro rubro = new Rubro();
-							rubro.IdRubro = rdr.GetInt32(0);
+							rubro.Id = rdr.GetInt32(0);
 							rubro.IdLocal = idLocal;
 							rubro.FechaBaja = rdr.IsDBNull(1) ? (DateTime?)null : rdr.GetDateTime(1);
 							rubro.Nombre = rdr.GetString(2);
@@ -66,13 +65,12 @@ namespace DataAccessLayer
 
 				try
 				{
-					cmd.ExecuteNonQuery();
 					using (SqlDataReader rdr = cmd.ExecuteReader())
 					{
 						while (rdr.Read())
 						{
 							Rubro rubro = new Rubro();
-							rubro.IdRubro = rdr.GetInt32(0);
+							rubro.Id = rdr.GetInt32(0);
 							rubro.IdLocal = idLocal;
 							rubro.FechaBaja = null;
 							rubro.Nombre = rdr.GetString(1);
@@ -106,7 +104,6 @@ namespace DataAccessLayer
 
 				try
 				{
-					cmd.ExecuteNonQuery();
 					Rubro rubro;
 					using (SqlDataReader rdr = cmd.ExecuteReader())
 					{
@@ -114,7 +111,7 @@ namespace DataAccessLayer
 						{
 							// Se encontró un rubro
 							rubro = new Rubro();
-							rubro.IdRubro = id;
+							rubro.Id = id;
 							rubro.IdLocal = rdr.GetInt32(0);
 							rubro.FechaBaja = rdr.IsDBNull(1) ? (DateTime?)null : rdr.GetDateTime(1);
 							rubro.Nombre = rdr.GetString(2);
@@ -136,6 +133,49 @@ namespace DataAccessLayer
 			}
 		}
 
+		/// <summary>
+		/// Busca rubro por id asumiendo una conexión abierta y
+		/// una transacción iniciada y manipulada externamente
+		/// </summary>
+		/// <param name="conn">Conexión ya abierta</param>
+		/// <param name="transaction">Transacción ya iniciada</param>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public static Rubro BuscarRubroPorId_Unsafe(SqlConnection conn, SqlTransaction transaction, int id)
+		{
+			SqlCommand cmd = new SqlCommand("dbo.BuscarRubroPorId", conn);
+			cmd.CommandType = System.Data.CommandType.StoredProcedure;
+			cmd.Parameters.AddWithValue("@IdRubro", id);
+			cmd.Transaction = transaction;
+
+			try
+			{
+				Rubro rubro;
+				using (SqlDataReader rdr = cmd.ExecuteReader())
+				{
+					if (rdr.Read())
+					{
+						// Se encontró un rubro
+						rubro = new Rubro();
+						rubro.Id = id;
+						rubro.IdLocal = rdr.GetInt32(0);
+						rubro.FechaBaja = rdr.IsDBNull(1) ? (DateTime?)null : rdr.GetDateTime(1);
+						rubro.Nombre = rdr.GetString(2);
+					}
+					else
+					{
+						// No se encontró un rubro
+						rubro = null;
+					}
+				}
+				return rubro;
+			}
+			catch
+			{
+				throw;
+			}
+		}
+
 		public static bool ActualizarRubro(Rubro rubro)
 		{
 			using (SqlConnection conn = SetupConnection())
@@ -145,7 +185,7 @@ namespace DataAccessLayer
 
 				SqlCommand cmd = new SqlCommand("dbo.ActualizarRubroPorId", conn);
 				cmd.CommandType = System.Data.CommandType.StoredProcedure;
-				cmd.Parameters.AddWithValue("@IdRubro", rubro.IdRubro);
+				cmd.Parameters.AddWithValue("@IdRubro", rubro.Id);
 				cmd.Parameters.AddWithValue("@FechaBaja", (object)rubro.FechaBaja ?? DBNull.Value);
 				cmd.Parameters.AddWithValue("@Nombre", rubro.Nombre);
 				cmd.Transaction = transaction;

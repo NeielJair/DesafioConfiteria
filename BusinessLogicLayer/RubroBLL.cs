@@ -63,7 +63,7 @@ namespace BusinessLogicLayer
 			{
 				throw new ArgumentNullException("El rubro no puede ser nulo");
 			}
-			if (rubro.IdRubro < 1)
+			if (rubro.Id < 1)
 			{
 				throw new ArgumentException("El ID del rubro no puede ser menor que 1");
 			}

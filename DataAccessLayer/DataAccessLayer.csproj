@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MozoDAL.cs" />
     <Compile Include="GlobalDAL.cs" />
     <Compile Include="ArticuloDAL.cs" />
     <Compile Include="RubroDAL.cs" />

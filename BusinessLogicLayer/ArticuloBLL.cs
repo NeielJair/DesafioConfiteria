@@ -63,7 +63,7 @@ namespace BusinessLogicLayer
 			{
 				throw new ArgumentNullException("El artículo no puede ser nulo");
 			}
-			if (articulo.IdArticulo < 1)
+			if (articulo.Id < 1)
 			{
 				throw new ArgumentException("El ID del artículo no puede ser menor que 1");
 			}
@@ -71,7 +71,7 @@ namespace BusinessLogicLayer
 			{
 				throw new ArgumentException("El ID del local no puede ser menor que 1");
 			}
-			if (articulo.IdRubro < 1)
+			if (articulo.Rubro.Id < 1)
 			{
 				throw new ArgumentException("El ID del rubro no puede ser menor que 1");
 			}
@@ -94,7 +94,7 @@ namespace BusinessLogicLayer
 			{
 				throw new ArgumentException("El ID del local no puede ser menor que 1");
 			}
-			if (articulo.IdRubro < 1)
+			if (articulo.Rubro.Id < 1)
 			{
 				throw new ArgumentException("El ID del rubro no puede ser menor que 1");
 			}

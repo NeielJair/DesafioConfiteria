@@ -8,7 +8,7 @@ namespace Entidades
 {
 	public class Mozo
 	{
-		public int IdMozo { get; set; }
+		public int Id { get; set; }
 		public int IdLocal { get; set; }
 		public DateTime? FechaBaja { get; set; }
 		public DateTime FechaContrato { get; set; }
