@@ -37,6 +37,8 @@ namespace DataAccessLayer
 
 							articulo.Rubro = RubroDAL.BuscarRubroPorId_Unsafe(conn, transaction, id: rdr.GetInt32(3));
 
+							articulo.Precio = (decimal)rdr.GetDouble(4);
+
 							articulos.Add(articulo);
 						}
 					}
@@ -78,6 +80,8 @@ namespace DataAccessLayer
 							articulo.Nombre = rdr.GetString(1);
 
 							articulo.Rubro = RubroDAL.BuscarRubroPorId_Unsafe(conn, transaction, id: rdr.GetInt32(2));
+
+							articulo.Precio = (decimal)rdr.GetDouble(3);
 
 							articulos.Add(articulo);
 						}
@@ -128,6 +132,7 @@ namespace DataAccessLayer
 				cmd.Parameters.AddWithValue("@FechaBaja", (object)articulo.FechaBaja ?? DBNull.Value);
 				cmd.Parameters.AddWithValue("@Nombre", articulo.Nombre);
 				cmd.Parameters.AddWithValue("@IdRubro", articulo.Rubro.Id);
+				cmd.Parameters.AddWithValue("@Precio", articulo.Precio);
 				cmd.Transaction = transaction;
 
 				int result;
@@ -160,6 +165,7 @@ namespace DataAccessLayer
 				cmd.Parameters.AddWithValue("@FechaBaja", (object)articulo.FechaBaja ?? DBNull.Value);
 				cmd.Parameters.AddWithValue("@Nombre", articulo.Nombre);
 				cmd.Parameters.AddWithValue("@IdRubro", articulo.Rubro.Id);
+				cmd.Parameters.AddWithValue("@Precio", articulo.Precio);
 				cmd.Transaction = transaction;
 
 				int result;
@@ -238,6 +244,8 @@ namespace DataAccessLayer
 						articulo.Nombre = rdr.GetString(2);
 
 						articulo.Rubro = RubroDAL.BuscarRubroPorId_Unsafe(conn, transaction, id: rdr.GetInt32(3));
+
+						articulo.Precio = (decimal)rdr.GetDouble(4);
 					}
 					else
 					{

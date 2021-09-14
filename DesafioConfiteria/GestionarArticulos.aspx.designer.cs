@@ -87,6 +87,33 @@ namespace DesafioConfiteria
 		protected global::System.Web.UI.WebControls.DropDownList ddlRubro;
 
 		/// <summary>
+		/// Control lblPrecio.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.Label lblPrecio;
+
+		/// <summary>
+		/// Control tbPrecioPesos.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.TextBox tbPrecioPesos;
+
+		/// <summary>
+		/// Control tbPrecioCentavos.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.TextBox tbPrecioCentavos;
+
+		/// <summary>
 		/// Control upModalFooter.
 		/// </summary>
 		/// <remarks>

@@ -15,6 +15,7 @@
                             <asp:BoundField DataField="Nombre" HeaderText="Nombre" ItemStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="FechaBaja" HeaderText="Fecha de baja" ItemStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="Rubro" HeaderText="Rubro" ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField DataField="Precio" HeaderText="Precio" ItemStyle-HorizontalAlign="Center" />
                             <asp:TemplateField HeaderText="Acciones" ItemStyle-HorizontalAlign="Center">
                                 <ItemTemplate>
 									<div class="row">
@@ -66,7 +67,15 @@
 							<asp:TextBox ID="tbNombre" runat="server" placeholder="Nombre del artículo" CssClass="form-control mb-2"></asp:TextBox>
 
 							<asp:Label ID="lblRubro" runat="server" Text="Rubro" CssClass="font-weight-bold"></asp:Label>
-							<asp:DropDownList ID="ddlRubro" runat="server" CssClass="form-control"></asp:DropDownList>
+							<asp:DropDownList ID="ddlRubro" runat="server" CssClass="form-control mb-2"></asp:DropDownList>
+
+							<asp:Label ID="lblPrecio" runat="server" Text="Precio" CssClass="font-weight-bold"></asp:Label>
+							<div class="input-group">
+								<span class="input-group-text">AR$</span>
+								<asp:TextBox ID="tbPrecioPesos" runat="server" placeholder="Pesos" CssClass="form-control" type="number"></asp:TextBox>
+								<span class="input-group-text">,</span>
+								<asp:TextBox ID="tbPrecioCentavos" runat="server" placeholder="Pesos" CssClass="form-control" Text="00" MaxLength="2" type="number"></asp:TextBox>
+							</div>
 						</ContentTemplate>
 						<Triggers>
 							<asp:AsyncPostBackTrigger ControlID="btnGuardar" EventName="Click" />
@@ -98,17 +107,28 @@
 			var lblRubro = $('#<%= lblRubro.ClientID %>')[0];
 			var ddlRubro = $('#<%= ddlRubro.ClientID%>')[0];
 
+			var lblPrecio = $('#<%= lblPrecio.ClientID %>')[0];
+			var tbPrecioPesos = $('#<%= tbPrecioPesos.ClientID%>')[0];
+			var tbPrecioCentavos = $('#<%= tbPrecioCentavos.ClientID%>')[0];
+
 			lblNombre.style.color = 'black';
 			lblRubro.style.color = 'black';
+			lblPrecio.style.color = 'black';
 
 			if (tbNombre.value === '') {
 				lblNombre.style.color = 'red';
 				valid = false;
 			}
-
 			if (ddlRubro.options[ddlRubro.selectedIndex].value == -1) {
 				lblRubro.style.color = 'red';
 				valid = false;
+			}
+			if (tbPrecioPesos.value === '') {
+				lblPrecioPesos.style.color = 'red';
+				valid = false;
+			}
+			if (tbPrecioCentavos.value === '') {
+				tbPrecioCentavos.value = '00';
 			}
 
 			if (valid) {

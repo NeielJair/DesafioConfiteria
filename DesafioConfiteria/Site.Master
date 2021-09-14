@@ -13,13 +13,13 @@
     <link rel="stylesheet" runat="server" media="screen" href="~/Content/Project/Global.css" />
     <script src="Scripts/Project/Global.js"></script>
 
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
     <form runat="server">
@@ -32,15 +32,15 @@
             </Scripts>
         </asp:ScriptManager> 
 
-        <nav id="masterNavbar" class="navbar navbar-expand-lg navbar-dark bg-dark mx-2">
-            <a class="navbar-brand" href="#">Navbar</a>
+        <nav id="masterNavbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand mx-3" href="#">Navbar</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item active">
-                        <a class="nav-link" href="MainPage.aspx" rel="keep-params">Inicio</a>
+                        <a class="nav-link" onclick="Redirect('MainPage')">Inicio</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -12,6 +12,7 @@ namespace Entidades
 		public int IdLocal { get; set; }
 		public DateTime? FechaBaja { get; set; }
 		public string Nombre { get; set; }
-		public Rubro Rubro;
+		public decimal Precio { get; set; }
+		public Rubro Rubro { get; set; }
 	}
 }

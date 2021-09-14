@@ -3,6 +3,7 @@ using Entidades;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -30,11 +31,12 @@ namespace DesafioConfiteria
 		{
             DataTable dt = new DataTable();
             dt.Columns.AddRange(
-                new DataColumn[4] { 
+                new DataColumn[5] { 
                     new DataColumn("Id"), 
                     new DataColumn("Nombre"), 
                     new DataColumn("FechaBaja"),
-                    new DataColumn("Rubro")});
+                    new DataColumn("Rubro"),
+                    new DataColumn("Precio")});
 
             List<Articulo> articulos = ArticuloBLL.BuscarArticulosPorIdLocal(idLocal);
 
@@ -44,7 +46,8 @@ namespace DesafioConfiteria
                     articulo.Id, 
                     articulo.Nombre, 
                     articulo.FechaBaja?.ToString() ?? "—", 
-                    $"{articulo.Rubro.Id} - {articulo.Rubro.Nombre}");
+                    $"{articulo.Rubro.Id} - {articulo.Rubro.Nombre}",
+                    "$" + articulo.Precio.ToString("0.00"));
             }
 
             gvRubros.DataSource = dt;
@@ -78,6 +81,25 @@ namespace DesafioConfiteria
                 ddlRubro.Items.FindByValue(articulo.Rubro.Id.ToString()).Selected = true;
             }
 
+            // Setup precio
+            string strPesos = "0";
+            string strCentavos = "00";
+            if (articulo != null)
+			{
+                int precioPesos = (int)Math.Floor(articulo.Precio);
+                int precioCentavos = (int)Math.Floor((articulo.Precio - precioPesos) * 100);
+
+                strPesos = precioPesos.ToString();
+                strCentavos = precioCentavos.ToString();
+                while (strCentavos.Length < 2)
+				{
+                    strCentavos += "0";
+				}
+            }
+
+            tbPrecioPesos.Text = strPesos;
+            tbPrecioCentavos.Text = strCentavos;
+
             current = articulo;
             upModal.Update();
         }
@@ -91,7 +113,7 @@ namespace DesafioConfiteria
         {
             // Cambiar el texto del botón si es que el rubro no está vigente
             bool estaVigente = e.Row.Cells[2].Text == "—";
-            foreach (Control ctrl in e.Row.Cells[4].Controls)
+            foreach (Control ctrl in e.Row.Cells[5].Controls)
 			{
                 if (estaVigente && ctrl.ID == "btnGvReactivar")
                 {
@@ -159,6 +181,7 @@ namespace DesafioConfiteria
 		{
             current.Nombre = tbNombre.Text;
             current.Rubro.Id = Int32.Parse(ddlRubro.SelectedValue);
+            current.Precio = Decimal.Parse($"{tbPrecioPesos.Text}.{tbPrecioCentavos.Text}", CultureInfo.InvariantCulture);
 
             if (ArticuloBLL.ActualizarArticulo(current))
 			{
@@ -185,6 +208,8 @@ namespace DesafioConfiteria
 
             articulo.Rubro = new Rubro();
             articulo.Rubro.Id = Int32.Parse(ddlRubro.SelectedValue);
+
+            articulo.Precio = Decimal.Parse($"{tbPrecioPesos.Text}.{tbPrecioCentavos.Text}", CultureInfo.InvariantCulture);
 
             if (ArticuloBLL.CrearArticulo(articulo))
 			{

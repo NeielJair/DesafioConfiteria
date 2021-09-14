@@ -1,4 +1,10 @@
-﻿function showModal(id, title, btnConfirm) {
+﻿function Redirect(page) {
+	var queryString = window.location.search;
+
+	window.location.href = `${page}${queryString}`;
+}
+
+function showModal(id, title, btnConfirm) {
 	var mdl = $('#' + id);
 	mdl.find('.modal-title').text(title);
 	mdl.find('.modal-confirm-btn').text(btnConfirm);
