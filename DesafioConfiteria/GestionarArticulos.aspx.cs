@@ -209,7 +209,18 @@ namespace DesafioConfiteria
             articulo.Rubro = new Rubro();
             articulo.Rubro.Id = Int32.Parse(ddlRubro.SelectedValue);
 
-            articulo.Precio = Decimal.Parse($"{tbPrecioPesos.Text}.{tbPrecioCentavos.Text}", CultureInfo.InvariantCulture);
+			try
+			{
+                articulo.Precio = Decimal.Parse($"{tbPrecioPesos.Text}.{tbPrecioCentavos.Text}", CultureInfo.InvariantCulture);
+            }
+            catch
+			{
+                MessageBox.Show(
+                    title: "No se pudo crear el artículo",
+                    message: "El precio es inválido",
+                    type: "error");
+                return;
+            }
 
             if (ArticuloBLL.CrearArticulo(articulo))
 			{

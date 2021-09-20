@@ -150,7 +150,20 @@ namespace DesafioConfiteria
             current.Nombre = tbNombre.Text;
             current.Apellido = tbApellido.Text;
             current.Documento = Int32.Parse(tbDocumento.Text);
-            current.Comision = Double.Parse(tbComision.Text);
+
+
+            try
+            {
+                current.Comision = decimal.Parse(tbComision.Text.Replace('.', ','));
+            }
+            catch
+            {
+                MessageBox.Show(
+                    title: "No se pudieron actualizar los datos del mozo",
+                    message: "El valor de la comisión no está escrito correctamente",
+                    type: "error");
+                return;
+            }
 
             if (MozoBLL.ActualizarMozo(current))
 			{
@@ -176,7 +189,19 @@ namespace DesafioConfiteria
             mozo.Nombre = tbNombre.Text;
             mozo.Apellido = tbApellido.Text;
             mozo.Documento = Int32.Parse(tbDocumento.Text);
-            mozo.Comision = Single.Parse(tbComision.Text);
+
+			try
+			{
+                mozo.Comision = decimal.Parse(tbComision.Text.Replace('.', ','));
+            }
+			catch
+			{
+                MessageBox.Show(
+                    title: "No se pudo crear el mozo",
+                    message: "El valor de la comisión no está escrito correctamente",
+                    type: "error");
+                return;
+            }
 
             if (MozoBLL.CrearMozo(mozo))
 			{
@@ -186,7 +211,7 @@ namespace DesafioConfiteria
 			else
 			{
                 MessageBox.Show(
-                    message: "No se crear el mozo",
+                    message: "No se pudo crear el mozo",
                     type: "error");
             }
         }

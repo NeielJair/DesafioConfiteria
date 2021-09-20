@@ -4,10 +4,10 @@
 	window.location.href = `${page}${queryString}`;
 }
 
-function showModal(id, title, btnConfirm) {
+function showModal(id, title = '', btnConfirm = '') {
 	var mdl = $('#' + id);
-	mdl.find('.modal-title').text(title);
-	mdl.find('.modal-confirm-btn').text(btnConfirm);
+	if (title != '')      mdl.find('.modal-title').text(title);
+	if (btnConfirm != '') mdl.find('.modal-confirm-btn').text(btnConfirm);
 	mdl.modal('show');
 }
 
@@ -42,3 +42,4 @@ function swalWarningConfirm(btn, content) {
 			});
 	}
 }
+

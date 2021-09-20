@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Articulo.cs" />
+    <Compile Include="ResumenMozo.cs" />
     <Compile Include="Ticket.cs" />
     <Compile Include="Mozo.cs" />
     <Compile Include="Rubro.cs" />

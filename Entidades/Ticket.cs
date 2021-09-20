@@ -33,7 +33,17 @@ namespace Entidades
 		}
         public decimal SacarComision()
 		{
-            return SacarTotal() * (Decimal)Mozo.Comision;
+            return SacarTotal() * (Decimal)Mozo.Comision / 100m;
+		}
+
+        public int CantidadTotal()
+		{
+            int n = 0;
+            foreach (Detalle detalle in Detalles)
+			{
+                n += detalle.Cantidad;
+			}
+            return n;
 		}
     }
 }

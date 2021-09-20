@@ -18,6 +18,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" runat="server" media="print" href="~/Content/Project/Print.css" />
 
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
@@ -33,23 +34,51 @@
         </asp:ScriptManager> 
 
         <nav id="masterNavbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand mx-3" href="#">Navbar</a>
+            <a class="navbar-brand mx-3" id="navbarTitle" runat="server" href="#">Navbar</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item active">
-                        <a class="nav-link" onclick="Redirect('MainPage')">Inicio</a>
+                        <a class="nav-link" href="#" onclick="Redirect('MainPage')">Inicio</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Gestionar
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="GestionarRubros.aspx" rel="keep-params">Rubros</a>
-                            <a class="dropdown-item" href="GestionarArticulos.aspx" rel="keep-params">Artículos</a>
-                        </div>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#" onclick="Redirect('GenerarVenta')">Vender</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#" onclick="Redirect('GestionarVentas')">Tickets/resumenes</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#" onclick="Redirect('GestionarMozos')">Mozos</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#" onclick="Redirect('GestionarArticulos')">Artículos</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#" onclick="Redirect('GestionarRubros')">Rubros</a>
+                    </li>
+                    <li class="nav-item active">
+                        <script>
+                            function AskLogout() {
+								swal({
+									text: "¿Está seguro que desea salir?",
+									icon: "warning",
+									buttons: ["No", "Sí"],
+									dangerMode: true
+								})
+									.then(function (response) {
+										if (response) {
+											window.location.href = 'ElegirLocal';
+										}
+									}).catch(function (reason) {
+										// La acción fue cancelada
+                                    });
+
+                                return false;
+							}
+						</script>
+                        <a class="nav-link" href="#" onclick="AskLogout();">Log out</a>
                     </li>
                 </ul>
             </div>

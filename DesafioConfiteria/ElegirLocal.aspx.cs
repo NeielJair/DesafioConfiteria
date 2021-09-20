@@ -35,6 +35,7 @@ namespace DesafioConfiteria
 
 		protected void BtnIngresar_click(object sender, EventArgs e)
 		{
+			Session["IdLocal"] = Int32.Parse(ddlLocal.SelectedValue);
 			Response.Redirect($"~/MainPage?IdLocal={ddlLocal.SelectedValue}");
 		}
 	}

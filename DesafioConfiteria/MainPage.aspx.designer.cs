@@ -15,6 +15,15 @@ namespace DesafioConfiteria
 	{
 
 		/// <summary>
+		/// Control headerLocal.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.HtmlControls.HtmlGenericControl headerLocal;
+
+		/// <summary>
 		/// Control btnArticulos.
 		/// </summary>
 		/// <remarks>
@@ -49,5 +58,14 @@ namespace DesafioConfiteria
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
 		protected global::System.Web.UI.WebControls.Button btnTicket;
+
+		/// <summary>
+		/// Control btnVentas.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.Button btnVentas;
 	}
 }

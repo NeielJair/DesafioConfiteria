@@ -1,6 +1,7 @@
 ﻿using Entidades;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -154,6 +155,35 @@ namespace DataAccessLayer
 			}
 		}
 
+		public static bool ActualizarTicketFechaBaja(Ticket ticket)
+		{
+			using (SqlConnection conn = SetupConnection())
+			{
+				conn.Open();
+				SqlTransaction transaction = conn.BeginTransaction();
+
+				SqlCommand cmd = new SqlCommand("dbo.ActualizarTicketFechaBajaPorId", conn);
+				cmd.CommandType = System.Data.CommandType.StoredProcedure;
+				cmd.Parameters.AddWithValue("@IdTicket", ticket.Id);
+				cmd.Parameters.AddWithValue("@FechaBaja", (object)ticket.FechaBaja ?? DBNull.Value);
+				cmd.Transaction = transaction;
+
+				int result = 0;
+				try
+				{
+					result = cmd.ExecuteNonQuery();
+					transaction.Commit();
+				}
+				catch
+				{
+					transaction.Rollback();
+					throw;
+				}
+
+				return result > 0;
+			}
+		}
+
 		public static bool CrearTicket(Ticket ticket)
 		{
 			using (SqlConnection conn = SetupConnection())
@@ -167,6 +197,9 @@ namespace DataAccessLayer
 				cmd.Parameters.AddWithValue("@FechaBaja", (object)ticket.FechaBaja ?? DBNull.Value);
 				cmd.Parameters.AddWithValue("@FechaVenta", ticket.FechaVenta);
 				cmd.Parameters.AddWithValue("@IdMozo", ticket.Mozo.Id);
+
+				cmd.Parameters.Add("@NewId", SqlDbType.Int).Direction = ParameterDirection.Output;
+
 				cmd.Transaction = transaction;
 
 				int result;
@@ -174,9 +207,11 @@ namespace DataAccessLayer
 				{
 					result = cmd.ExecuteNonQuery();
 
+					ticket.Id = Convert.ToInt32(cmd.Parameters["@NewId"].Value);
+
 					foreach (Ticket.Detalle detalle in ticket.Detalles)
 					{
-						CrearDetalleTicket_Unsafe(conn, transaction, detalle);
+						CrearDetalleTicket_Unsafe(conn, transaction, detalle, ticket.Id);
 					}
 
 					transaction.Commit();
@@ -348,11 +383,11 @@ namespace DataAccessLayer
 		/// <param name="transaction">Transacción ya iniciada</param>
 		/// <param name="idTicket"></param>
 		/// <returns></returns>
-		protected static bool CrearDetalleTicket_Unsafe(SqlConnection conn, SqlTransaction transaction, Ticket.Detalle detalle)
+		protected static bool CrearDetalleTicket_Unsafe(SqlConnection conn, SqlTransaction transaction, Ticket.Detalle detalle, int idTicket)
 		{
 			SqlCommand cmd = new SqlCommand("dbo.CrearDetalleTicket", conn);
 			cmd.CommandType = System.Data.CommandType.StoredProcedure;
-			cmd.Parameters.AddWithValue("@IdTicket", detalle.Id);
+			cmd.Parameters.AddWithValue("@IdTicket", idTicket);
 			cmd.Parameters.AddWithValue("@IdArticulo", detalle.Articulo.Id);
 			cmd.Parameters.AddWithValue("@Cantidad", detalle.Cantidad);
 			cmd.Transaction = transaction;

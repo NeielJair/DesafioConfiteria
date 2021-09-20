@@ -1,0 +1,18 @@
+﻿body * {
+	visibility: hidden;
+}
+
+@page {
+	margin: 0.7cm;
+}
+
+#printSection, #printSection *, .printable, .printable * {
+	visibility: visible;
+	width: 100%;
+}
+
+#printSection, .printable {
+	position: absolute;
+	left: 0;
+	top: 0;
+}

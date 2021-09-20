@@ -15,6 +15,11 @@ namespace Entidades
 		public string Nombre { get; set; }
 		public string Apellido { get; set; }
 		public int Documento { get; set; }
-		public double Comision { get; set; }
+		public decimal Comision { get; set; }
+
+		public string NombreCompleto()
+		{
+			return $"{Nombre} {Apellido}";
+		}
 	}
 }

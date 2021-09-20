@@ -3,15 +3,14 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 	<asp:UpdatePanel runat="server" UpdateMode="Conditional">
 		<ContentTemplate>
-			<div class="row h-100">
-				<div class="col text-center align-self-center">
+			<h1 id="headerLocal" class="my-5" runat="server"></h1>
+
+			<div class="d-grid gap-2">
 					<asp:Button ID="btnArticulos" runat="server" Text="Gestionar artículos" CssClass="btn btn-primary" OnClientClick="Redirect('GestionarArticulos')" />
 					<asp:Button ID="btnMozos" runat="server" Text="Gestionar mozos" CssClass="btn btn-primary" OnClientClick="Redirect('GestionarMozos')" />
-				</div>
-				<div class="col text-center align-self-center">
 					<asp:Button ID="btnRubros" runat="server" Text="Gestionar rubros" CssClass="btn btn-primary" OnClientClick="Redirect('GestionarRubros')" />
-					<asp:Button ID="btnTicket" runat="server" Text="Crear nuevo ticket" CssClass="btn btn-primary" OnClientClick="Redirect('CrearTicket')" />
-				</div>
+					<asp:Button ID="btnTicket" runat="server" Text="Generar venta (crear ticket)" CssClass="btn btn-primary" OnClientClick="Redirect('GenerarVenta')" />
+					<asp:Button ID="btnVentas" runat="server" Text="Gestionar ventas y ver resumenes" CssClass="btn btn-primary" OnClientClick="Redirect('GestionarVentas')" />
 			</div>
 		</ContentTemplate>
 	</asp:UpdatePanel>

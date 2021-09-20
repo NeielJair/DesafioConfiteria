@@ -37,7 +37,7 @@ namespace DataAccessLayer
 							mozo.Nombre = rdr.GetString(3);
 							mozo.Apellido = rdr.GetString(4);
 							mozo.Documento = rdr.GetInt32(5);
-							mozo.Comision = rdr.GetDouble(6);
+							mozo.Comision = rdr.GetDecimal(6);
 
 							mozos.Add(mozo);
 						}
@@ -81,7 +81,7 @@ namespace DataAccessLayer
 							mozo.Nombre = rdr.GetString(2);
 							mozo.Apellido = rdr.GetString(3);
 							mozo.Documento = rdr.GetInt32(4);
-							mozo.Comision = rdr.GetDouble(5);
+							mozo.Comision = rdr.GetDecimal(5);
 
 							mozos.Add(mozo);
 						}
@@ -249,7 +249,7 @@ namespace DataAccessLayer
 						mozo.Nombre = rdr.GetString(3);
 						mozo.Apellido = rdr.GetString(4);
 						mozo.Documento = rdr.GetInt32(5);
-						mozo.Comision = rdr.GetDouble(6);
+						mozo.Comision = rdr.GetDecimal(6);
 					}
 					else
 					{

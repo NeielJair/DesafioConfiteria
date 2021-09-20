@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BusinessLogicLayer;
+using Entidades;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,6 +15,9 @@ namespace DesafioConfiteria
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			idLocal = Int32.Parse(Request.QueryString["IdLocal"]);
+			Local local = LocalBLL.BuscarLocalPorId(idLocal);
+
+			headerLocal.InnerText = $"{local.Nombre}";
 		}
 	}
 }

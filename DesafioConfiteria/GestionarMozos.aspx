@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GestionarMozos.aspx.cs" Inherits="DesafioConfiteria.GestionarMozos" %>
+﻿<%@ Page Title="Gestionar mozos" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GestionarMozos.aspx.cs" Inherits="DesafioConfiteria.GestionarMozos" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 	<asp:UpdatePanel ID="upMain" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="false">
@@ -74,7 +74,7 @@
 							<asp:TextBox ID="tbApellido" runat="server" placeholder="Apellido" CssClass="form-control mb-2"></asp:TextBox>
 
 							<asp:Label ID="lblComision" runat="server" Text="Comisión" CssClass="font-weight-bold"></asp:Label>
-							<asp:TextBox ID="tbComision" runat="server" placeholder="Comisión (entre 0 y 100)" type="number" CssClass="form-control"></asp:TextBox>
+							<asp:TextBox ID="tbComision" runat="server" placeholder="Comisión (entre 0 y 100)" CssClass="form-control"></asp:TextBox>
 						</ContentTemplate>
 						<Triggers>
 							<asp:AsyncPostBackTrigger ControlID="btnGuardar" EventName="Click" />
@@ -118,7 +118,7 @@
 			lblComision.style.color = 'black';
 
 
-			if (tbDocumento.value === '') {
+			if (tbDocumento.value === '' || tbDocumento.value < 0) {
 				lblDocumento.style.color = 'red';
 				valid = false;
 			}
@@ -130,7 +130,9 @@
 				lblApellido.style.color = 'red';
 				valid = false;
 			}
-			if (tbComision.value === '' || parseFloat(tbComision.value) < 0 || parseFloat(tbComision.value) > 100) {
+			regex = /^(\d*(\.|\,){1}\d+|\d*){1}/g;
+			matched = tbComision.value.match(regex);
+			if (tbComision.value === '' || isNaN(parseFloat(tbComision.value)) || parseFloat(tbComision.value) < 0 || parseFloat(tbComision.value) > 100 || matched == null || matched.length !== 1) {
 				lblComision.style.color = 'red';
 				valid = false;
 			}

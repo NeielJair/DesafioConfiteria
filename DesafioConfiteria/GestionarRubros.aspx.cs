@@ -21,6 +21,14 @@ namespace DesafioConfiteria
             if (!IsPostBack)
             {
                 idLocal = Int32.Parse(Request.QueryString["IdLocal"]);
+				try
+				{
+                    idLocal = Session["IdLocal"] as int? ?? throw new ArgumentNullException();
+				}
+				catch
+				{
+                    Response.Redirect("ElegirLocal");
+				}
 
                 SetupGridview();
             }

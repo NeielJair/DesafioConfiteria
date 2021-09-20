@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BusinessLogicLayer;
+using Entidades;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,7 +13,13 @@ namespace DesafioConfiteria
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			// TODO Request.QueryString[localId], despues set title = local.name + " - " + Page.title
+			string request = Request.QueryString["IdLocal"];
+			if (request != null)
+			{
+				Local local = LocalBLL.BuscarLocalPorId(Int32.Parse(request));
+				Page.Title = local.Nombre + " - " + Page.Title;
+				navbarTitle.InnerHtml = $"<i>{local.Nombre}</i>";
+			}
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GestionarArticulos.aspx.cs" Inherits="DesafioConfiteria.GestionarArticulos" %>
+﻿<%@ Page Title="Gestionar artículos" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GestionarArticulos.aspx.cs" Inherits="DesafioConfiteria.GestionarArticulos" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 	<asp:UpdatePanel ID="upMain" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="false">
@@ -119,15 +119,15 @@
 				lblNombre.style.color = 'red';
 				valid = false;
 			}
-			if (ddlRubro.options[ddlRubro.selectedIndex].value == -1) {
+			if (ddlRubro.options[ddlRubro.selectedIndex].value == '-1') {
 				lblRubro.style.color = 'red';
 				valid = false;
 			}
-			if (tbPrecioPesos.value === '') {
-				lblPrecioPesos.style.color = 'red';
+			if (tbPrecioPesos.value === '' || tbPrecioPesos.value < 0) {
+				lblPrecio.style.color = 'red';
 				valid = false;
 			}
-			if (tbPrecioCentavos.value === '') {
+			if (tbPrecioCentavos.value === '' || tbPrecioCentavos.value < 0) {
 				tbPrecioCentavos.value = '00';
 			}
 
