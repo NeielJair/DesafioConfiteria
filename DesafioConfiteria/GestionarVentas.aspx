@@ -172,7 +172,7 @@
                 <div class="modal-body">
 					<asp:UpdatePanel ID="upModalMozoInforme" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="false">
 						<ContentTemplate>
-							<asp:GridView ID="gvMozoInforme" runat="server" style='width:100%; overflow:auto;' AutoGenerateColumns="false" CssClass="DBDisplay" OnDataBound="GvMozoInforme_OnDatabound" ShowHeaderWhenEmpty="true" >
+							<asp:GridView ID="gvMozoInforme" runat="server" style='width:100%; overflow:auto;' AutoGenerateColumns="false"  OnDataBound="GvMozoInforme_OnDatabound" ShowHeaderWhenEmpty="true" GridLines="Both" >
 								<Columns>
 									<asp:BoundField DataField="Mozo" HeaderText="Mozo" ItemStyle-HorizontalAlign="Center" />
 									<asp:BoundField DataField="Cantidad" HeaderText="Cant. Artículos" ItemStyle-HorizontalAlign="Center" />

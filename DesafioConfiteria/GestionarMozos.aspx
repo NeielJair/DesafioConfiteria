@@ -9,7 +9,7 @@
 			</asp:LinkButton>
 			<div class="row">
 				<div class="col-9 text-center align-self-center">
-					<asp:GridView ID="gvRubros" runat="server" AutoGenerateColumns="false" OnRowCommand="GvRubros_RowCommand" CssClass="DBDisplay" OnRowDatabound="GvRubros_RowDatabound">
+					<asp:GridView ID="gvMozos" runat="server" AutoGenerateColumns="false" OnRowCommand="GvMozos_RowCommand" CssClass="DBDisplay" OnRowDatabound="GvMozos_RowDatabound">
                         <Columns>
                             <asp:BoundField DataField="Id" HeaderText="Identificador" ItemStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="Documento" HeaderText="Número de documento" ItemStyle-HorizontalAlign="Center" />

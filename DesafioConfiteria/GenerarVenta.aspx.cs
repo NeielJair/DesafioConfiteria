@@ -23,7 +23,14 @@ namespace DesafioConfiteria
 		{
             if (!IsPostBack)
             {
-                idLocal = Int32.Parse(Request.QueryString["IdLocal"]);
+                try
+                {
+                    idLocal = Session["IdLocal"] as int? ?? throw new ArgumentNullException();
+                }
+                catch
+                {
+                    Response.Redirect("ElegirLocal");
+                }
 
                 ticket.IdLocal = idLocal;
                 ticket.FechaBaja = null;
@@ -95,8 +102,8 @@ namespace DesafioConfiteria
                 i++;
             }
 
-            gvRubros.DataSource = dt;
-            gvRubros.DataBind();
+            gvDetalles.DataSource = dt;
+            gvDetalles.DataBind();
         }
 
         private void UpdateUI()
@@ -128,10 +135,10 @@ namespace DesafioConfiteria
             return ticket.Detalles[Int32.Parse(row.Cells[0].Text)];
         }
 
-        protected void GvRubros_RowCommand(object sender, GridViewCommandEventArgs e)
+        protected void GvDetalles_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             int rowIndex = Convert.ToInt32(e.CommandArgument);
-            GridViewRow row = gvRubros.Rows[rowIndex];
+            GridViewRow row = gvDetalles.Rows[rowIndex];
             Ticket.Detalle detalle = RowToDetalle(row); //TODO ver si funciona así
 
             switch (e.CommandName)
@@ -219,11 +226,11 @@ namespace DesafioConfiteria
                 return;
             }
 
-            if (TicketBLL.CrearTicket(ticket))
+            if (!TicketBLL.CrearTicket(ticket))
 			{
-                MessageBox.ShowConfirmation(
-                    title: "La venta fue generada exitosamente",
-                    message: "¿Desea descargar el ticket? (WIP, no va a hacer nada)");
+                MessageBox.Show(
+                    message: "La venta fue generada exitosamente",
+                    type: "success");
 			}
 			else
 			{

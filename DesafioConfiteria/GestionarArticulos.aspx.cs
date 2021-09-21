@@ -21,7 +21,14 @@ namespace DesafioConfiteria
 		{
             if (!IsPostBack)
             {
-                idLocal = Int32.Parse(Request.QueryString["IdLocal"]);
+                try
+                {
+                    idLocal = Session["IdLocal"] as int? ?? throw new ArgumentNullException();
+                }
+                catch
+                {
+                    Response.Redirect("ElegirLocal");
+                }
 
                 SetupGridview();
             }
@@ -50,8 +57,8 @@ namespace DesafioConfiteria
                     "$" + articulo.Precio.ToString("0.00"));
             }
 
-            gvRubros.DataSource = dt;
-            gvRubros.DataBind();
+            gvArticulos.DataSource = dt;
+            gvArticulos.DataBind();
         }
 
         private void SetupModal(Articulo articulo)
@@ -109,7 +116,7 @@ namespace DesafioConfiteria
             return ArticuloBLL.BuscarArticuloPorId(Int32.Parse(row.Cells[0].Text));
         }
 
-        protected void GvRubros_RowDatabound(object sender, GridViewRowEventArgs e)
+        protected void GvArticulos_RowDatabound(object sender, GridViewRowEventArgs e)
         {
             // Cambiar el texto del botón si es que el rubro no está vigente
             bool estaVigente = e.Row.Cells[2].Text == "—";
@@ -126,12 +133,12 @@ namespace DesafioConfiteria
             }
         }
 
-        protected void GvRubros_RowCommand(object sender, GridViewCommandEventArgs e)
+        protected void GvArticulos_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             current = null;
 
             int rowIndex = Convert.ToInt32(e.CommandArgument);
-            GridViewRow row = gvRubros.Rows[rowIndex];
+            GridViewRow row = gvArticulos.Rows[rowIndex];
             Articulo articulo = RowToArticulo(row);
 
             switch (e.CommandName)

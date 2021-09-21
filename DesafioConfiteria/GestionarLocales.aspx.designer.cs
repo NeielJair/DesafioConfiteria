@@ -11,7 +11,7 @@ namespace DesafioConfiteria
 {
 
 
-	public partial class GestionarArticulos
+	public partial class GestionarLocales
 	{
 
 		/// <summary>
@@ -24,22 +24,22 @@ namespace DesafioConfiteria
 		protected global::System.Web.UI.UpdatePanel upMain;
 
 		/// <summary>
-		/// Control btnNuevoArticulo.
+		/// Control btnNuevoRubro.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.LinkButton btnNuevoArticulo;
+		protected global::System.Web.UI.WebControls.LinkButton btnNuevoRubro;
 
 		/// <summary>
-		/// Control gvArticulos.
+		/// Control gvLocales.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.GridView gvArticulos;
+		protected global::System.Web.UI.WebControls.GridView gvLocales;
 
 		/// <summary>
 		/// Control upModal.
@@ -69,49 +69,76 @@ namespace DesafioConfiteria
 		protected global::System.Web.UI.WebControls.TextBox tbNombre;
 
 		/// <summary>
-		/// Control lblRubro.
+		/// Control lblDireccion.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.Label lblRubro;
+		protected global::System.Web.UI.WebControls.Label lblDireccion;
 
 		/// <summary>
-		/// Control ddlRubro.
+		/// Control tbDireccion.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.DropDownList ddlRubro;
+		protected global::System.Web.UI.WebControls.TextBox tbDireccion;
 
 		/// <summary>
-		/// Control lblPrecio.
+		/// Control lblTelefono.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.Label lblPrecio;
+		protected global::System.Web.UI.WebControls.Label lblTelefono;
 
 		/// <summary>
-		/// Control tbPrecioPesos.
+		/// Control tbTelefono.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.TextBox tbPrecioPesos;
+		protected global::System.Web.UI.WebControls.TextBox tbTelefono;
 
 		/// <summary>
-		/// Control tbPrecioCentavos.
+		/// Control lblEmail.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.TextBox tbPrecioCentavos;
+		protected global::System.Web.UI.WebControls.Label lblEmail;
+
+		/// <summary>
+		/// Control tbEmail.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.TextBox tbEmail;
+
+		/// <summary>
+		/// Control lblContraseña.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.Label lblContraseña;
+
+		/// <summary>
+		/// Control tbPassword.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.TextBox tbPassword;
 
 		/// <summary>
 		/// Control upModalFooter.

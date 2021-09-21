@@ -150,6 +150,7 @@
     <Content Include="GenerarVenta.aspx" />
     <Content Include="GestionarMozos.aspx" />
     <Content Include="GestionarArticulos.aspx" />
+    <Content Include="GestionarLocales.aspx" />
     <Content Include="GestionarVentas.aspx" />
     <Content Include="MainPage.aspx" />
     <Content Include="favicon.ico" />
@@ -298,6 +299,13 @@
     </Compile>
     <Compile Include="GestionarArticulos.aspx.designer.cs">
       <DependentUpon>GestionarArticulos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GestionarLocales.aspx.cs">
+      <DependentUpon>GestionarLocales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GestionarLocales.aspx.designer.cs">
+      <DependentUpon>GestionarLocales.aspx</DependentUpon>
     </Compile>
     <Compile Include="GestionarVentas.aspx.cs">
       <DependentUpon>GestionarVentas.aspx</DependentUpon>

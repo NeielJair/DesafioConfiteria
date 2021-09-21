@@ -8,7 +8,7 @@
 				<div class="col-9 text-center align-self-center">
 					<asp:DropDownList ID="ddlMozo" runat="server" CssClass="form-control mb-2" AutoPostBack="true" OnSelectedIndexChanged="DdlMozos_SelectedItemChanged"></asp:DropDownList>
 
-					<asp:GridView ID="gvRubros" runat="server" style='width:100%; overflow:auto;' AutoGenerateColumns="false" OnRowCommand="GvRubros_RowCommand" CssClass="DBDisplay" >
+					<asp:GridView ID="gvDetalles" runat="server" style='width:100%; overflow:auto;' AutoGenerateColumns="false" OnRowCommand="GvDetalles_RowCommand" CssClass="DBDisplay" >
                         <Columns>
                             <asp:BoundField DataField="Index" HeaderText="Entrada nro." ItemStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="Cantidad" HeaderText="Cantidad" ItemStyle-HorizontalAlign="Center" />

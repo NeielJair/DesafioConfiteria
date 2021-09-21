@@ -39,5 +39,71 @@ namespace BusinessLogicLayer
 
 			return LocalDAL.BuscarLocalPorId(id);
 		}
+
+		/// <summary>
+		/// Actualiza los datos de un local
+		/// </summary>
+		/// <param name="local"></param>
+		/// <returns>Devuelve true si la operación fue exitosa</returns>
+		/// <exception cref="IncorrectPasswordException">Cuando la contraseña no matchea</exception>
+		public static bool ActualizarLocal(Local local, string password)
+		{
+			if (local == null)
+			{
+				throw new ArgumentNullException("El local no puede ser nulo");
+			}
+			if (local.Id < 1)
+			{
+				throw new ArgumentException("El ID del local no puede ser menor que 1");
+			}
+
+			return LocalDAL.ActualizarLocal(local, password);
+		}
+
+		/// <summary>
+		/// Crea un local
+		/// </summary>
+		/// <param name="Local"></param>
+		/// <returns>Devuelve true si la operación fue exitosa</returns>
+		public static bool CrearLocal(Local Local, string password)
+		{
+			if (Local == null)
+			{
+				throw new ArgumentNullException("El local no puede ser nulo");
+			}
+
+			return LocalDAL.CrearLocal(Local, password);
+		}
+
+		/// <summary>
+		/// Elimina un local de la BDs
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns>Devuelve true si la operación fue exitosa</returns>
+		/// <exception cref="IncorrectPasswordException">Cuando la contraseña no matchea</exception>
+		public static bool EliminarLocalPorId(int id, string password)
+		{
+			if (id < 1)
+			{
+				throw new ArgumentException("El ID del local no puede ser menor que 1");
+			}
+
+			return LocalDAL.EliminarLocalPorId(id, password);
+		}
+
+		/// <summary>
+		/// Informa si la contraseña es correcta
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns>Devuelve true si la contraseña matchea</returns>
+		public static bool LoginPorId(int id, string password)
+		{
+			if (id < 1)
+			{
+				throw new ArgumentException("El ID del local no puede ser menor que 1");
+			}
+
+			return LocalDAL.LoginPorId(id, password);
+		}
 	}
 }

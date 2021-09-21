@@ -28,7 +28,14 @@ namespace DesafioConfiteria
 		{
             if (!IsPostBack)
             {
-                idLocal = Int32.Parse(Request.QueryString["IdLocal"]);
+                try
+                {
+                    idLocal = Session["IdLocal"] as int? ?? throw new ArgumentNullException();
+                }
+                catch
+                {
+                    Response.Redirect("ElegirLocal");
+                }
                 local = LocalBLL.BuscarLocalPorId(idLocal);
 
                 calendar.SelectedDate = DateTime.Today;
@@ -38,8 +45,10 @@ namespace DesafioConfiteria
             }
         }
 
+        // Setup
         private void SetupGridview()
 		{
+            // Gv de los tickets
             DataTable dt = new DataTable();
             dt.Columns.AddRange(
                 new DataColumn[6] { 
@@ -69,6 +78,7 @@ namespace DesafioConfiteria
 
         private void SetupGvTicket()
 		{
+            // Gv de un ticket individual
             DataTable dt = new DataTable();
             dt.Columns.AddRange(
                 new DataColumn[3] {
@@ -90,6 +100,7 @@ namespace DesafioConfiteria
 
         private void SetupGvResumenDiario(DateTime date)
         {
+            // Gv del resumen diario
             DataTable dt = new DataTable();
             dt.Columns.AddRange(
                 new DataColumn[4] {
@@ -103,7 +114,6 @@ namespace DesafioConfiteria
                 (from ticket in tickets
                  where ticket.FechaVenta.Date == date
                  select ticket).ToList();
-            // TODO make SP
 
             // Resumir toda la información en un único ticket
             Ticket totalTicket = new Ticket();
@@ -144,6 +154,7 @@ namespace DesafioConfiteria
 
         private void SetupGvMozoInforme(DateTime date)
         {
+            // Gv de las ventas de un mozo
             DataTable dt = new DataTable();
             dt.Columns.AddRange(
                 new DataColumn[5] {
@@ -158,7 +169,6 @@ namespace DesafioConfiteria
                 (from ticket in tickets
                  where ticket.FechaVenta.Date == date
                  select ticket).ToList();
-            // TODO make SP
 
             // Resumir toda la información
             currentInforme = new InformeVentas(date);
@@ -192,6 +202,8 @@ namespace DesafioConfiteria
             return tickets.Find(ticket => ticket.Id == id);
         }
 
+        // Eventos de los gvs
+        //  Gv principal
         protected void Gv_RowDatabound(object sender, GridViewRowEventArgs e)
         {
             // Cambiar el texto del botón si es que el rubro no está vigente
@@ -261,6 +273,7 @@ namespace DesafioConfiteria
             upMain.Update();
         }
 
+        //  Gv de un ticket
         protected void GvModalTicket_OnDatabound(object sender, EventArgs e)
         {
             // Header
@@ -304,6 +317,7 @@ namespace DesafioConfiteria
             upModalTicket.Update();
         }
 
+        //  Gv del resumen diario
         protected void GvResumenDiario_OnDatabound(object sender, EventArgs e)
         {
             // Header
@@ -343,6 +357,7 @@ namespace DesafioConfiteria
             upModalResumenDiario.Update();
         }
 
+        //  Gv del resumen de un mozo
         protected void GvMozoInforme_OnDatabound(object sender, EventArgs e)
         {
             // Header
@@ -382,27 +397,7 @@ namespace DesafioConfiteria
             upModalMozoInforme.Update();
         }
 
-        protected void BtnImprimirTicket_click(object sender, EventArgs e)
-		{
-            MessageBox.Show( 
-                message: "WIP",
-                type: "error");
-        }
-
-        protected void BtnImprimirResumenDiario_click(object sender, EventArgs e)
-        {
-            MessageBox.Show(
-                message: "WIP",
-                type: "error");
-        }
-
-        protected void BtnImprimirMozoInforme_click(object sender, EventArgs e)
-        {
-            MessageBox.Show(
-                message: "WIP",
-                type: "error");
-        }
-
+        // Botones
         protected void BtnResumenDiario_click(object sender, EventArgs e)
 		{
             DateTime date = calendar.SelectedDate.Date;

@@ -5,10 +5,9 @@
 		document.getElementById('masterNavbar').style.visibility = "hidden";
 
 		function Ingresar() {
-			var ddl = document.getElementById("<%=ddlLocal.ClientID%>");
-			var value = ddl.options[ddl.selectedIndex].value;
+			var ddl = document.getElementById("<%= ddlLocal.ClientID %>");
 
-			if (value == -1) {
+			if (ddl.selectedIndex == 0) {
 				swal({
 					text: "Seleccione un local",
 					icon: "error",
@@ -16,20 +15,26 @@
 				});
 
 				return false;
-			} else {
-				return true;
 			}
+			return true;
 		}
 	</script>
 
 	<asp:UpdatePanel runat="server" UpdateMode="Conditional">
 		<ContentTemplate>
-			<div class="row h-100">
-				<div class="col text-center align-self-center">
-					<asp:DropDownList ID="ddlLocal" runat="server"></asp:DropDownList>
+			<div class="row">
+				<div class="col-5">
+					<asp:Label runat="server" Text="Local" CssClass="font-weight-bold"></asp:Label>
+					<asp:DropDownList ID="ddlLocal" runat="server" CssClass="form-control mb-2"></asp:DropDownList>
+
+					<asp:Label runat="server" Text="Contraseña" CssClass="font-weight-bold"></asp:Label>
+					<asp:TextBox ID="tbPassword" runat="server" CssClass="form-control mb-2" type="password"></asp:TextBox>
+
 					<asp:Button ID="btnIngresar" runat="server" Text="Ingresar" CssClass="btn btn-primary" OnClientClick="return Ingresar()" OnClick="BtnIngresar_click" />
+
 				</div>
 			</div>
+			<asp:Button ID="btnGestionar" runat="server" Text="Gestionar locales" CssClass="btn btn-primary mt-5" PostBackUrl="GestionarLocales" />
 		</ContentTemplate>
 		<Triggers>
             <asp:AsyncPostBackTrigger ControlID="btnIngresar" EventName="Click" />

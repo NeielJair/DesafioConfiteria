@@ -15,5 +15,5 @@ namespace DataAccessLayer
 		{
 			return new SqlConnection(CONNECTION_STRING);
 		}
-	}
+    }
 }

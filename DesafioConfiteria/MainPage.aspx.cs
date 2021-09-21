@@ -14,7 +14,14 @@ namespace DesafioConfiteria
         private int idLocal;
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			idLocal = Int32.Parse(Request.QueryString["IdLocal"]);
+			try
+			{
+				idLocal = Session["IdLocal"] as int? ?? throw new ArgumentNullException();
+			}
+			catch
+			{
+				Response.Redirect("ElegirLocal");
+			}
 			Local local = LocalBLL.BuscarLocalPorId(idLocal);
 
 			headerLocal.InnerText = $"{local.Nombre}";

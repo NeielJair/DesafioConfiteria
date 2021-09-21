@@ -24,6 +24,15 @@ namespace DesafioConfiteria
 		protected global::System.Web.UI.WebControls.DropDownList ddlLocal;
 
 		/// <summary>
+		/// Control tbPassword.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.TextBox tbPassword;
+
+		/// <summary>
 		/// Control btnIngresar.
 		/// </summary>
 		/// <remarks>
@@ -31,5 +40,14 @@ namespace DesafioConfiteria
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
 		protected global::System.Web.UI.WebControls.Button btnIngresar;
+
+		/// <summary>
+		/// Control btnGestionar.
+		/// </summary>
+		/// <remarks>
+		/// Campo generado automáticamente.
+		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.Button btnGestionar;
 	}
 }

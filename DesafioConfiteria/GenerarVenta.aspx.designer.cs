@@ -42,13 +42,13 @@ namespace DesafioConfiteria
 		protected global::System.Web.UI.WebControls.DropDownList ddlMozo;
 
 		/// <summary>
-		/// Control gvRubros.
+		/// Control gvDetalles.
 		/// </summary>
 		/// <remarks>
 		/// Campo generado automáticamente.
 		/// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.GridView gvRubros;
+		protected global::System.Web.UI.WebControls.GridView gvDetalles;
 
 		/// <summary>
 		/// Control lblTotal.

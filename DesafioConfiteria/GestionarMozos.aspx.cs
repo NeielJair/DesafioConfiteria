@@ -20,7 +20,14 @@ namespace DesafioConfiteria
 		{
             if (!IsPostBack)
             {
-                idLocal = Int32.Parse(Request.QueryString["IdLocal"]);
+                try
+                {
+                    idLocal = Session["IdLocal"] as int? ?? throw new ArgumentNullException();
+                }
+                catch
+                {
+                    Response.Redirect("ElegirLocal");
+                }
 
                 SetupGridview();
             }
@@ -51,8 +58,8 @@ namespace DesafioConfiteria
                     $"{mozo.Comision}%");
             }
 
-            gvRubros.DataSource = dt;
-            gvRubros.DataBind();
+            gvMozos.DataSource = dt;
+            gvMozos.DataBind();
         }
 
         private void SetupModal(Mozo mozo)
@@ -77,7 +84,7 @@ namespace DesafioConfiteria
             return MozoBLL.BuscarMozoPorId(Int32.Parse(row.Cells[0].Text));
         }
 
-        protected void GvRubros_RowDatabound(object sender, GridViewRowEventArgs e)
+        protected void GvMozos_RowDatabound(object sender, GridViewRowEventArgs e)
         {
             // Cambiar el texto del botón si es que el rubro no está vigente
             bool estaVigente = e.Row.Cells[4].Text == "—";
@@ -94,12 +101,12 @@ namespace DesafioConfiteria
             }
         }
 
-        protected void GvRubros_RowCommand(object sender, GridViewCommandEventArgs e)
+        protected void GvMozos_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             current = null;
 
             int rowIndex = Convert.ToInt32(e.CommandArgument);
-            GridViewRow row = gvRubros.Rows[rowIndex];
+            GridViewRow row = gvMozos.Rows[rowIndex];
             Mozo mozo = RowToMozo(row);
 
             switch (e.CommandName)

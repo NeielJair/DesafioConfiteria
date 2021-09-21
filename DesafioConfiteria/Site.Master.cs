@@ -13,10 +13,9 @@ namespace DesafioConfiteria
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			string request = Request.QueryString["IdLocal"];
-			if (request != null)
+			if (Session["IdLocal"] != null)
 			{
-				Local local = LocalBLL.BuscarLocalPorId(Int32.Parse(request));
+				Local local = LocalBLL.BuscarLocalPorId(Session["IdLocal"] as int? ?? throw new Exception());
 				Page.Title = local.Nombre + " - " + Page.Title;
 				navbarTitle.InnerHtml = $"<i>{local.Nombre}</i>";
 			}
